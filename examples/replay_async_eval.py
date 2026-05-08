@@ -10,8 +10,8 @@ import random
 from specops import (
     EvalCase,
     eval_golden_set_async,
-    replayable,
     recording,
+    replayable,
     replaying,
     trace_agent,
 )

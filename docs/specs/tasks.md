@@ -90,6 +90,28 @@
 
 ---
 
+## Phase 4.0: Self-Healing + RCA
+
+**Goal:** Ship self-healing policies and root-cause analysis graph generator.
+
+**Prerequisites:** Phase 3.0 complete.
+
+### Tasks
+
+| # | Task | Status | Verification |
+|---|------|--------|--------------|
+| 4.0.1 | Implement self-healing policy engine (RetryPolicy, FallbackPolicy, EscalatePolicy, PruneMemoryPolicy) | ✅ Done | Policies execute correctly |
+| 4.0.2 | Implement `@self_healing` decorator (sync + async) | ✅ Done | Decorator applies policies in order |
+| 4.0.3 | Implement RCA Graph generator (`build_rca_graph`) | ✅ Done | Builds graph from OTel spans |
+| 4.0.4 | Implement visualization helper (`to_dot`, `save_dot`) | ✅ Done | Produces valid DOT output |
+| 4.0.5 | Integrate with OTel tracing layer (heal spans + attributes) | ✅ Done | `specops.heal.*` attributes on spans |
+| 4.0.6 | Create examples (self_healing_basic, rca_analysis, self_healing_advanced) | ✅ Done | All 3 examples run |
+| 4.0.7 | Write tests (19 tests for heal/rca/viz) | ✅ Done | `uv run pytest` passes |
+| 4.0.8 | Update design.md, tasks.md, README | ✅ Done | Docs reflect Phase 4 |
+| 4.0.9 | Fix lint + typecheck (including pre-existing issues) | ✅ Done | `ruff check` + `mypy` pass |
+
+---
+
 ## Definition of Done
 
 A task is complete when:

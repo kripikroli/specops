@@ -49,14 +49,10 @@ class TestLangGraphAdapter:
         return LangGraphAdapter()
 
     def test_extract_task_from_input_key(self, adapter: LangGraphAdapter):
-        assert adapter.extract_task(
-            ({"input": "hello world"},), {}
-        ) == "hello world"
+        assert adapter.extract_task(({"input": "hello world"},), {}) == "hello world"
 
     def test_extract_task_from_task_key(self, adapter: LangGraphAdapter):
-        assert adapter.extract_task(
-            ({"task": "do stuff"},), {}
-        ) == "do stuff"
+        assert adapter.extract_task(({"task": "do stuff"},), {}) == "do stuff"
 
     def test_extract_task_from_messages(self, adapter: LangGraphAdapter):
         @dataclass
@@ -74,13 +70,12 @@ class TestLangGraphAdapter:
         assert adapter.extract_task(("plain string",), {}) == "plain string"
 
     def test_extract_task_from_kwargs(self, adapter: LangGraphAdapter):
-        assert adapter.extract_task(
-            (), {"state": {"input": "from kwargs"}}
-        ) == "from kwargs"
+        assert (
+            adapter.extract_task((), {"state": {"input": "from kwargs"}})
+            == "from kwargs"
+        )
 
-    def test_extract_llm_metadata_from_ai_message(
-        self, adapter: LangGraphAdapter
-    ):
+    def test_extract_llm_metadata_from_ai_message(self, adapter: LangGraphAdapter):
         @dataclass
         class AIMsg:
             content: str = "response"
@@ -109,9 +104,7 @@ class TestLangGraphAdapter:
     def test_extract_llm_metadata_empty(self, adapter: LangGraphAdapter):
         assert adapter.extract_llm_metadata("plain string") == {}
 
-    def test_extract_tool_metadata_with_content_attr(
-        self, adapter: LangGraphAdapter
-    ):
+    def test_extract_tool_metadata_with_content_attr(self, adapter: LangGraphAdapter):
         @dataclass
         class ToolMsg:
             content: str = "tool output"
@@ -120,9 +113,7 @@ class TestLangGraphAdapter:
         assert meta["result"] == "tool output"
 
     def test_extract_tool_metadata_from_dict(self, adapter: LangGraphAdapter):
-        meta = adapter.extract_tool_metadata(
-            (), {}, {"content": "result data"}
-        )
+        meta = adapter.extract_tool_metadata((), {}, {"content": "result data"})
         assert meta["result"] == "result data"
 
 
@@ -143,16 +134,15 @@ class TestCrewAIAdapter:
         assert adapter.extract_task((Task(),), {}) == "Write a report"
 
     def test_extract_task_from_dict(self, adapter: CrewAIAdapter):
-        assert adapter.extract_task(
-            ({"description": "analyze data"},), {}
-        ) == "analyze data"
+        assert (
+            adapter.extract_task(({"description": "analyze data"},), {})
+            == "analyze data"
+        )
 
     def test_extract_task_from_string(self, adapter: CrewAIAdapter):
         assert adapter.extract_task(("simple task",), {}) == "simple task"
 
-    def test_extract_llm_metadata_from_crew_output(
-        self, adapter: CrewAIAdapter
-    ):
+    def test_extract_llm_metadata_from_crew_output(self, adapter: CrewAIAdapter):
         @dataclass
         class CrewOutput:
             raw: str = "output"
@@ -179,9 +169,7 @@ class TestCrewAIAdapter:
         assert meta["input_tokens"] == 20
         assert meta["output_tokens"] == 30
 
-    def test_extract_tool_metadata_with_output_attr(
-        self, adapter: CrewAIAdapter
-    ):
+    def test_extract_tool_metadata_with_output_attr(self, adapter: CrewAIAdapter):
         @dataclass
         class ToolResult:
             output: str = "tool done"
@@ -190,9 +178,7 @@ class TestCrewAIAdapter:
         assert meta["result"] == "tool done"
 
     def test_extract_tool_metadata_from_dict(self, adapter: CrewAIAdapter):
-        meta = adapter.extract_tool_metadata(
-            (), {}, {"output": "dict result"}
-        )
+        meta = adapter.extract_tool_metadata((), {}, {"output": "dict result"})
         assert meta["result"] == "dict result"
 
 
@@ -202,14 +188,10 @@ class TestAutoGenAdapter:
         return AutoGenAdapter()
 
     def test_extract_task_from_message_kwarg(self, adapter: AutoGenAdapter):
-        assert adapter.extract_task(
-            (), {"message": "hello agent"}
-        ) == "hello agent"
+        assert adapter.extract_task((), {"message": "hello agent"}) == "hello agent"
 
     def test_extract_task_from_dict_arg(self, adapter: AutoGenAdapter):
-        assert adapter.extract_task(
-            ({"content": "chat msg"},), {}
-        ) == "chat msg"
+        assert adapter.extract_task(({"content": "chat msg"},), {}) == "chat msg"
 
     def test_extract_task_from_string_arg(self, adapter: AutoGenAdapter):
         assert adapter.extract_task(("direct",), {}) == "direct"
@@ -231,13 +213,9 @@ class TestAutoGenAdapter:
         assert adapter.extract_llm_metadata("string") == {}
 
     def test_extract_tool_metadata_dict_result(self, adapter: AutoGenAdapter):
-        meta = adapter.extract_tool_metadata(
-            (), {}, {"content": "fn result"}
-        )
+        meta = adapter.extract_tool_metadata((), {}, {"content": "fn result"})
         assert meta["result"] == "fn result"
 
-    def test_extract_tool_metadata_plain_result(
-        self, adapter: AutoGenAdapter
-    ):
+    def test_extract_tool_metadata_plain_result(self, adapter: AutoGenAdapter):
         meta = adapter.extract_tool_metadata((), {}, 42)
         assert meta["result"] == 42

@@ -96,6 +96,34 @@ def run_crew(inputs: dict) -> str:
 
 > ⚠️ SpecOps is in early development (v0.2.0). APIs will change. See the [Roadmap](ROADMAP.md).
 
+### Self-Healing
+
+```python
+from specops import self_healing, RetryPolicy, FallbackPolicy
+
+def backup_llm(prompt: str) -> str:
+    return "fallback response"
+
+@self_healing(
+    retry=RetryPolicy(max_retries=3, base_delay=0.5),
+    fallback=FallbackPolicy(fallback_fn=backup_llm),
+)
+def call_llm(prompt: str) -> str:
+    # Your LLM call — auto-retries on failure, falls back if exhausted
+    ...
+```
+
+### RCA Graph
+
+```python
+from specops import build_rca_graph, to_dot
+
+# After collecting spans from an InMemorySpanExporter
+graph = build_rca_graph(spans)
+print(f"Root causes: {[n.name for n in graph.root_causes]}")
+dot_output = to_dot(graph, title="Failure Analysis")
+```
+
 ### Replay & Evaluation
 
 ```python
@@ -131,8 +159,9 @@ verdict = llm_judge(output, criteria="correctness", judge_fn=my_llm)
 | **OTel Tracing** | ✅ Phase 1 | Trace agent runs, tool calls, LLM requests with OpenTelemetry spans |
 | **Replay Engine** | ✅ Phase 3.0 | Record and replay agent sessions deterministically |
 | **Eval Harness** | ✅ Phase 3.0 | Golden-set comparison + LLM-as-judge for behavioral evaluation |
-| **Self-Healing** | 📋 Phase 4 | Circuit breakers, retry with backoff, fallback chains for LLM calls |
-| **Anomaly Detection** | 📋 Phase 4 | Detect loops, drift, and degradation in real-time |
+| **Self-Healing** | ✅ Phase 4 | Retry with backoff, fallback chains, escalation, memory pruning |
+| **RCA Graphs** | ✅ Phase 4 | Root-cause analysis from OTel spans, Graphviz DOT export |
+| **Anomaly Detection** | 📋 Phase 5 | Detect loops, drift, and degradation in real-time |
 
 ## Architecture
 

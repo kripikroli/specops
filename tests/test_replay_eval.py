@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import json
 import random
 from pathlib import Path
 
@@ -10,8 +9,6 @@ import pytest
 
 from specops.eval import (
     EvalCase,
-    EvalResult,
-    JudgeVerdict,
     _default_comparator,
     _parse_judge_response,
     eval_golden_set,
@@ -29,7 +26,6 @@ from specops.replay import (
     replayable,
     replaying,
 )
-
 
 # --- Replay Engine Tests ---
 
@@ -132,7 +128,7 @@ class TestRecording:
         def get_val() -> str:
             return f"val-{random.randint(1, 100)}"
 
-        with recording(session_id="path-test", seed=5, store=store) as session:
+        with recording(session_id="path-test", seed=5, store=store) as session:  # noqa: F841
             original = get_val()
 
         # Replay from file path
@@ -156,9 +152,8 @@ class TestRecording:
         with recording(session_id="mismatch", seed=1, store=store):
             func_a()
 
-        with replaying("mismatch", store=store):
-            with pytest.raises(ReplayMismatchError):
-                func_b()
+        with replaying("mismatch", store=store), pytest.raises(ReplayMismatchError):
+            func_b()
 
     def test_no_context_passthrough(self):
         """Without recording/replaying context, functions execute normally."""
@@ -313,9 +308,7 @@ class TestLlmJudge:
         async def mock_llm(prompt: str) -> str:
             return '{"score": 0.9, "reasoning": "Great"}'
 
-        verdict = await llm_judge_async(
-            "output", criteria="quality", judge_fn=mock_llm
-        )
+        verdict = await llm_judge_async("output", criteria="quality", judge_fn=mock_llm)
         assert verdict.score == 0.9
 
 

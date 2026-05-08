@@ -35,7 +35,9 @@ def _setup_tracer(monkeypatch: pytest.MonkeyPatch):
     provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     # Bypass the "already set" guard by patching the global
-    monkeypatch.setattr(trace, "_TRACER_PROVIDER_SET_ONCE", trace._TRACER_PROVIDER_SET_ONCE.__class__())
+    monkeypatch.setattr(
+        trace, "_TRACER_PROVIDER_SET_ONCE", trace._TRACER_PROVIDER_SET_ONCE.__class__()
+    )
     trace.set_tracer_provider(provider)
 
     monkeypatch.setattr("specops.config._configured", True)

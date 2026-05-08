@@ -62,9 +62,8 @@ def trace_agent(name: str, *, framework: str = "plain") -> Callable[[F], F]:
             tracer = get_tracer()
             task = str(args[0]) if args else kwargs.get("task", "")
             parent_ctx = get_current_context()
-            ctx_arg = {"context": parent_ctx} if parent_ctx else {}
             with tracer.start_as_current_span(
-                f"agent:{name}", **ctx_arg
+                f"agent:{name}", context=parent_ctx
             ) as span:
                 span.set_attribute(AGENT_NAME, name)
                 span.set_attribute(AGENT_TASK, _truncate(task))
@@ -84,9 +83,8 @@ def trace_agent(name: str, *, framework: str = "plain") -> Callable[[F], F]:
             tracer = get_tracer()
             task = str(args[0]) if args else kwargs.get("task", "")
             parent_ctx = get_current_context()
-            ctx_arg = {"context": parent_ctx} if parent_ctx else {}
             with tracer.start_as_current_span(
-                f"agent:{name}", **ctx_arg
+                f"agent:{name}", context=parent_ctx
             ) as span:
                 span.set_attribute(AGENT_NAME, name)
                 span.set_attribute(AGENT_TASK, _truncate(task))

@@ -6,7 +6,7 @@ to capture non-deterministic LLM calls and replay them deterministically.
 
 import random
 
-from specops import replayable, recording, replaying, trace_agent, trace_tool
+from specops import recording, replayable, replaying, trace_agent, trace_tool
 
 
 @replayable
@@ -47,7 +47,7 @@ def main() -> None:
 
     # --- Replay the same session ---
     print("\n=== Replaying Session ===")
-    with replaying("demo-session") as replay_session:
+    with replaying("demo-session") as replay_session:  # noqa: F841
         result2 = research_agent("capital of France")
         print(f"Result: {result2}")
 

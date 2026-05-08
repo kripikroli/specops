@@ -381,7 +381,71 @@ def eval_with_replay(
 
 ### 3.3 Heal Module (`specops.heal`) — Phase 4
 
-(Deferred to future phase)
+#### 3.3.1 Self-Healing Policy Engine
+
+Pluggable policies that recover from failures automatically:
+
+```python
+@dataclass
+class RetryPolicy:
+    max_retries: int = 3
+    base_delay: float = 1.0
+    max_delay: float = 30.0
+    retryable: Callable[[Exception], bool] | None = None
+
+@dataclass
+class FallbackPolicy:
+    fallback_fn: Callable[..., Any]
+    trigger: Callable[[Exception], bool] | None = None
+
+@dataclass
+class EscalatePolicy:
+    handler: Callable[..., Any]
+
+@dataclass
+class PruneMemoryPolicy:
+    prune_fn: Callable[[tuple, dict], tuple[tuple, dict]]
+    max_prunes: int = 2
+```
+
+#### 3.3.2 `@self_healing` Decorator
+
+```python
+@self_healing(
+    retry=RetryPolicy(max_retries=3, base_delay=0.1),
+    fallback=FallbackPolicy(fallback_fn=backup_llm),
+)
+def call_llm(prompt: str) -> str:
+    ...
+```
+
+Policies are tried in order: retry → prune_memory → fallback → escalate.
+Creates OTel spans with `specops.heal.*` attributes for observability.
+
+#### 3.3.3 RCA Graph Generator (`specops.rca`)
+
+Builds directed graphs from OTel spans to identify failure root causes:
+
+```python
+from specops import build_rca_graph, to_dot
+
+graph = build_rca_graph(spans)  # list[ReadableSpan]
+root_causes = graph.root_causes
+paths = graph.infection_paths
+dot_output = to_dot(graph)
+```
+
+#### 3.3.4 Visualization (`specops.viz`)
+
+Exports RCA graphs to Graphviz DOT format (zero dependencies):
+
+```python
+from specops import to_dot, save_dot
+
+dot_str = to_dot(graph, title="Failure Analysis")
+save_dot(graph, "rca.dot")
+# Render: dot -Tpng rca.dot -o rca.png
+```
 
 ## 4. Development Tooling
 

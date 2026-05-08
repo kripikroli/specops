@@ -13,6 +13,17 @@ from specops.eval import (
     llm_judge,
     llm_judge_async,
 )
+from specops.heal import (
+    EscalatePolicy,
+    FallbackPolicy,
+    HealingChain,
+    PolicyAction,
+    PolicyResult,
+    PruneMemoryPolicy,
+    RetryPolicy,
+    self_healing,
+)
+from specops.rca import RCAEdge, RCAGraph, RCANode, build_rca_graph
 from specops.replay import (
     RecordedCall,
     ReplayMismatchError,
@@ -23,6 +34,7 @@ from specops.replay import (
     replaying,
 )
 from specops.trace import trace_agent, trace_llm, trace_tool
+from specops.viz import save_dot, to_dot
 
 __all__ = [
     # Adapters
@@ -54,4 +66,21 @@ __all__ = [
     "eval_golden_set_async",
     "llm_judge",
     "llm_judge_async",
+    # Heal
+    "EscalatePolicy",
+    "FallbackPolicy",
+    "HealingChain",
+    "PolicyAction",
+    "PolicyResult",
+    "PruneMemoryPolicy",
+    "RetryPolicy",
+    "self_healing",
+    # RCA
+    "RCAEdge",
+    "RCAGraph",
+    "RCANode",
+    "build_rca_graph",
+    # Viz
+    "save_dot",
+    "to_dot",
 ]
