@@ -5,7 +5,8 @@ from __future__ import annotations
 import functools
 import inspect
 import json
-from typing import Any, Callable, TypeVar, overload
+from collections.abc import Callable
+from typing import Any, TypeVar
 
 from opentelemetry import context as otel_context
 from opentelemetry import trace
@@ -24,7 +25,11 @@ from specops._constants import (
     TOOL_NAME,
     TOOL_RESULT,
 )
-from specops._context import _current_agent_ctx, get_current_context, set_current_context
+from specops._context import (
+    _current_agent_ctx,
+    get_current_context,
+    set_current_context,
+)
 from specops.config import get_tracer
 
 F = TypeVar("F", bound=Callable[..., Any])
@@ -117,7 +122,8 @@ def trace_tool(name: str | None = None) -> Callable[[F], F]:
             tracer = get_tracer()
             with tracer.start_as_current_span(f"tool:{tool_name}") as span:
                 span.set_attribute(TOOL_NAME, tool_name)
-                span.set_attribute(TOOL_ARGS, _truncate({"args": args, "kwargs": kwargs}))
+                tool_args = _truncate({"args": args, "kwargs": kwargs})
+                span.set_attribute(TOOL_ARGS, tool_args)
                 try:
                     result = await fn(*args, **kwargs)
                     span.set_attribute(TOOL_RESULT, _truncate(result))
@@ -132,7 +138,8 @@ def trace_tool(name: str | None = None) -> Callable[[F], F]:
             tracer = get_tracer()
             with tracer.start_as_current_span(f"tool:{tool_name}") as span:
                 span.set_attribute(TOOL_NAME, tool_name)
-                span.set_attribute(TOOL_ARGS, _truncate({"args": args, "kwargs": kwargs}))
+                tool_args = _truncate({"args": args, "kwargs": kwargs})
+                span.set_attribute(TOOL_ARGS, tool_args)
                 try:
                     result = fn(*args, **kwargs)
                     span.set_attribute(TOOL_RESULT, _truncate(result))
