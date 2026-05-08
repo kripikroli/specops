@@ -1,6 +1,6 @@
 # SpecOps — Design Specification
 
-> Version: 0.1 | Status: Draft | Last Updated: 2026-05-07
+> Version: 0.2 | Status: Active | Last Updated: 2026-05-07
 
 ## 1. High-Level Architecture
 
@@ -19,7 +19,7 @@
 │       │             │           │            │       │
 │  ┌────▼─────────────▼───────────▼────────────▼────┐  │
 │  │              Core Runtime                      │  │
-│  │  context · config · registry · events          │  │
+│  │  context · config · adapters · constants       │  │
 │  └────────────────────┬──────────────────────────┘  │
 └───────────────────────┼──────────────────────────────┘
                         │ OTel Protocol
@@ -29,128 +29,204 @@
 └──────────────────────────────────────────────────────┘
 ```
 
-## 2. Module Design
+## 2. Phase 1 — Trace Module Design
 
-### 2.1 Trace Module (`specops.trace`)
+### 2.1 Semantic Conventions (`specops._constants`)
 
-**Purpose:** Instrument agent code with OpenTelemetry spans.
-
-**Public API:**
+All attribute keys follow the `specops.*` namespace to avoid collision with upstream OTel semconv.
 
 ```python
-from specops import trace_agent, trace_tool, trace_llm
+# Agent attributes
+AGENT_NAME = "specops.agent.name"
+AGENT_TASK = "specops.agent.task"
+AGENT_FRAMEWORK = "specops.agent.framework"
+AGENT_STEP = "specops.agent.step"
+AGENT_DECISION = "specops.agent.decision"
 
-@trace_agent(name="researcher")
-async def research(query: str) -> str: ...
+# Tool attributes
+TOOL_NAME = "specops.tool.name"
+TOOL_ARGS = "specops.tool.args"
+TOOL_RESULT = "specops.tool.result"
 
-@trace_tool(name="web-search")
-def search(query: str) -> list[str]: ...
+# LLM attributes
+LLM_MODEL = "specops.llm.model"
+LLM_PROVIDER = "specops.llm.provider"
+LLM_TOKENS_INPUT = "specops.llm.tokens.input"
+LLM_TOKENS_OUTPUT = "specops.llm.tokens.output"
+LLM_TEMPERATURE = "specops.llm.temperature"
+LLM_SEED = "specops.llm.seed"
 
-@trace_llm(model="gpt-4")
-async def call_llm(prompt: str) -> str: ...
+# Coordination / multi-agent
+COORDINATION_EVENT = "specops.coordination.event"
+MEMORY_ACCESS = "specops.memory.access"
+
+# Replay support
+REPLAY_SEED = "specops.replay.seed"
+REPLAY_SESSION_ID = "specops.replay.session_id"
 ```
 
-**Internal Design:**
-- Uses `opentelemetry.trace` to create spans
-- Decorators are thin wrappers that start/end spans and attach attributes
-- Context propagation via `contextvars` for async support
-- Auto-detects OTel exporter from environment (`OTEL_EXPORTER_OTLP_ENDPOINT`)
+### 2.2 Decorator API (`specops.trace`)
 
-**Span Attributes:**
-
-| Attribute | Type | Example |
-|-----------|------|---------|
-| `specops.agent.name` | string | `"researcher"` |
-| `specops.agent.task` | string | `"find papers on X"` |
-| `specops.tool.name` | string | `"web-search"` |
-| `specops.llm.model` | string | `"gpt-4"` |
-| `specops.llm.tokens.input` | int | `150` |
-| `specops.llm.tokens.output` | int | `500` |
-| `specops.llm.latency_ms` | float | `1200.5` |
-
-### 2.2 Eval Module (`specops.eval`)
-
-**Purpose:** Run agents against test cases and score results.
-
-**Public API:**
+#### `@trace_agent`
 
 ```python
-from specops.eval import EvalSuite, Case, metrics
+def trace_agent(
+    name: str,
+    *,
+    framework: str = "plain",
+) -> Callable:
+    """Trace an agent function as a root/parent span.
 
-suite = EvalSuite(
-    agent=my_agent,
-    cases=[
-        Case(input="summarize X", expected="contains key points"),
-    ],
-    metrics=[metrics.task_completion, metrics.faithfulness],
-)
+    Args:
+        name: Human-readable agent name (becomes span name prefix).
+        framework: Agent framework identifier (plain, langgraph, crewai, autogen).
 
-results = await suite.run()
+    The first positional arg of the decorated function is captured as `specops.agent.task`.
+    """
 ```
 
-**Internal Design:**
-- `EvalSuite` orchestrates running agent on each case
-- Metrics are functions: `(input, output, expected) -> float`
-- Results stored as structured data (exportable to JSON/CSV)
-- pytest integration via `assert results.score("task_completion") > 0.8`
+**Span produced:** `agent:{name}` with attributes `specops.agent.name`, `specops.agent.task`, `specops.agent.framework`.
 
-### 2.3 Debug Module (`specops.debug`)
-
-**Purpose:** Record and replay agent sessions.
-
-**Public API:**
+#### `@trace_tool`
 
 ```python
-from specops.debug import record, replay, diff
+def trace_tool(
+    name: str | None = None,
+) -> Callable:
+    """Trace a tool/function call as a child span.
 
-# Record
-session = await record(agent, input="do X")
+    Args:
+        name: Tool name. Defaults to the function's __name__.
 
-# Replay with mocked LLM
-result = await replay(session, mock_llm=cached_responses)
-
-# Compare runs
-changes = diff(session_a, session_b)
+    Captures serialized args as `specops.tool.args` and return value as `specops.tool.result`
+    (truncated to 1024 chars).
+    """
 ```
 
-**Internal Design:**
-- Recording captures all span data + LLM request/response pairs
-- Replay injects recorded LLM responses via mock provider
-- Diff compares span trees structurally (added/removed/changed steps)
+**Span produced:** `tool:{name}` with attributes `specops.tool.name`, `specops.tool.args`, `specops.tool.result`.
 
-### 2.4 Heal Module (`specops.heal`)
-
-**Purpose:** Recovery primitives for LLM agent failures.
-
-**Public API:**
+#### `@trace_llm`
 
 ```python
-from specops.heal import retry, fallback, circuit_breaker
+def trace_llm(
+    model: str = "",
+    *,
+    provider: str = "",
+    capture_result: bool = False,
+) -> Callable:
+    """Trace an LLM invocation as a child span.
 
-@retry(max_attempts=3, backoff="exponential")
-@fallback(chain=["gpt-4", "gpt-3.5-turbo", "cached"])
-@circuit_breaker(failure_threshold=5, recovery_timeout=60)
-async def call_model(prompt: str) -> str: ...
+    Args:
+        model: Model identifier (e.g. "gpt-4o"). Can be overridden at runtime via return dict.
+        provider: Provider name (e.g. "openai").
+        capture_result: If True, store the LLM response text as a span attribute.
+
+    If the decorated function returns a dict with keys `input_tokens`, `output_tokens`,
+    `model`, those values are used to populate span attributes.
+    """
 ```
 
-**Internal Design:**
-- `retry`: Wraps calls with configurable backoff (exponential, jitter)
-- `fallback`: Ordered list of alternatives; tries next on failure
-- `circuit_breaker`: Tracks failures per provider; opens circuit after threshold
-- Loop detection: Monitors span patterns for repetition; raises `AgentLoopError`
+**Span produced:** `llm:{model}` with attributes `specops.llm.model`, `specops.llm.provider`, `specops.llm.tokens.input`, `specops.llm.tokens.output`.
 
-## 3. Configuration
+### 2.3 Context Propagation (`specops._context`)
 
 ```python
-# specops.toml or environment variables
-[specops]
-service_name = "my-agent-service"
-export_endpoint = "http://localhost:4317"
+from contextvars import ContextVar
 
-[specops.heal]
-default_retry_attempts = 3
-circuit_breaker_threshold = 5
+# Current agent span context — allows child spans to nest under the active agent
+_current_agent_ctx: ContextVar[Context | None] = ContextVar("specops_agent_ctx", default=None)
+
+def get_current_context() -> Context | None:
+    """Return the active SpecOps trace context (for nesting child spans)."""
+
+def set_current_context(ctx: Context) -> Token:
+    """Set the active context. Returns a token for reset."""
 ```
+
+Uses `opentelemetry.context` for span propagation. The `contextvars` layer ensures correct behavior across `asyncio.gather()`, `create_task()`, and nested awaits.
+
+### 2.4 Adapter System (`specops.adapters`)
+
+Adapters normalize framework-specific metadata into SpecOps semantic attributes.
+
+```python
+from abc import ABC, abstractmethod
+
+class BaseAdapter(ABC):
+    """Base class for framework adapters."""
+
+    @abstractmethod
+    def extract_task(self, args: tuple, kwargs: dict) -> str:
+        """Extract the agent task from function arguments."""
+
+    @abstractmethod
+    def extract_llm_metadata(self, result: Any) -> dict[str, Any]:
+        """Extract LLM metadata (tokens, model) from a call result."""
+
+    @abstractmethod
+    def extract_tool_metadata(self, args: tuple, kwargs: dict, result: Any) -> dict[str, Any]:
+        """Extract tool metadata from a call."""
+
+
+class PlainAdapter(BaseAdapter):
+    """Default adapter for plain Python agent code."""
+    ...
+```
+
+Adapters are selected via the `framework=` parameter on `@trace_agent` or auto-detected.
+
+### 2.5 Configuration (`specops.config`)
+
+```python
+def configure(
+    service_name: str | None = None,
+    endpoint: str | None = None,
+    *,
+    enabled: bool = True,
+) -> None:
+    """Configure the SpecOps tracer.
+
+    Falls back to environment variables:
+      - OTEL_SERVICE_NAME (default: "specops")
+      - OTEL_EXPORTER_OTLP_ENDPOINT (default: None → console exporter)
+      - SPECOPS_ENABLED (default: "true")
+
+    If no OTLP endpoint is set, uses ConsoleSpanExporter for local dev.
+    """
+```
+
+Auto-configures on first decorator use (lazy init). No manual `configure()` call required for basic usage.
+
+### 2.6 Public API (`specops.__init__`)
+
+```python
+from specops.trace import trace_agent, trace_tool, trace_llm
+from specops.config import configure
+from specops.adapters import BaseAdapter, PlainAdapter
+
+__all__ = [
+    "trace_agent",
+    "trace_tool",
+    "trace_llm",
+    "configure",
+    "BaseAdapter",
+    "PlainAdapter",
+]
+```
+
+## 3. Modules (Phase 2+)
+
+### 3.1 Eval Module (`specops.eval`) — Phase 2
+
+(Unchanged from v0.1 design)
+
+### 3.2 Debug Module (`specops.debug`) — Phase 2
+
+(Unchanged from v0.1 design)
+
+### 3.3 Heal Module (`specops.heal`) — Phase 3
+
+(Unchanged from v0.1 design)
 
 ## 4. Development Tooling
 
@@ -162,14 +238,16 @@ circuit_breaker_threshold = 5
 | **mypy** | Type checking | `uv run mypy src/` |
 | **pytest** | Testing | `uv run pytest` |
 
-All commands are run through `uv run` to ensure the correct virtualenv and dependencies. The `uv.lock` file is committed for reproducible installs across all environments.
-
 ## 5. Trade-offs & Decisions
 
 | Decision | Rationale |
 |----------|-----------|
 | Decorators over middleware | Lower barrier to entry; works with any function |
 | OTel-native over custom format | Leverage existing ecosystem; no vendor lock-in |
-| Async-first | Most agent frameworks are async; sync support via wrapper |
-| No framework plugins in core | Keep core minimal; plugins live in separate packages |
-| Python-only initially | Largest agent ecosystem; expand later based on demand |
+| Async-first with sync fallback | Most agent frameworks are async; `inspect.iscoroutinefunction` to auto-detect |
+| `contextvars` for propagation | Works with asyncio natively; no monkey-patching |
+| Lazy tracer init | Zero-config: first decorator use triggers setup |
+| Adapter pattern for frameworks | Keeps core generic; framework specifics isolated |
+| Truncate tool args/results to 1024 chars | Prevents span bloat from large payloads |
+| Console exporter as default | Works out of the box for local dev; OTLP when endpoint is set |
+| No Pydantic in core | Minimal deps; use dataclasses/TypedDict for internal types |
