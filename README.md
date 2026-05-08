@@ -10,11 +10,12 @@
   <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/v/specops?color=blue" alt="PyPI"></a>
   <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/pyversions/specops" alt="Python"></a>
   <a href="https://github.com/specops-kit/specops/actions"><img src="https://img.shields.io/github/actions/workflow/status/specops-kit/specops/ci.yml?branch=main" alt="CI"></a>
+  <a href="https://codecov.io/gh/specops-kit/specops"><img src="https://img.shields.io/codecov/c/github/specops-kit/specops?color=green" alt="Coverage"></a>
   <a href="https://github.com/specops-kit/specops/blob/main/LICENSE"><img src="https://img.shields.io/github/license/specops-kit/specops" alt="License"></a>
 </p>
 
 <p align="center">
-  <a href="#quickstart">Quickstart</a> •
+  <a href="#getting-started">Getting Started</a> •
   <a href="#features">Features</a> •
   <a href="#simulation-sandbox">Simulation</a> •
   <a href="#multi-agent-coordination">Coordination</a> •
@@ -34,10 +35,30 @@ LLM agents fail silently. They hallucinate, loop, drift off-task, and degrade wi
 - **Self-healing** — Agents crash and stay crashed; no recovery patterns exist
 - **Simulation** — No way to test for emergent failures before they hit production
 
-## Quickstart
+## Getting Started
+
+### Installation
 
 ```bash
 pip install specops
+```
+
+With framework adapters:
+
+```bash
+pip install specops[langgraph]   # LangGraph support
+pip install specops[crewai]      # CrewAI support
+pip install specops[all]         # All adapters
+```
+
+### One-Line Quickstart
+
+```python
+from specops import trace_agent
+
+@trace_agent(name="my-agent")
+def agent(task: str) -> str:
+    return "done"  # Your agent logic — now fully traced via OTel
 ```
 
 ### Trace Any Agent
@@ -93,7 +114,7 @@ def call_llm(prompt: str) -> str:
 ### Simulation Sandbox
 
 ```python
-from specops import simulation, SimulationEnvironment
+from specops import simulation
 
 with simulation("loop-test", max_steps=50, loop_threshold=3) as sim:
     for action in agent_actions:

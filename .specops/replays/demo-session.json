@@ -1,0 +1,25 @@
+{
+  "session_id": "demo-session",
+  "seed": 42,
+  "recorded_at": "2026-05-08T10:00:11.587987+00:00",
+  "calls": [
+    {
+      "func_name": "search",
+      "args_hash": "62d3caec26bba24c",
+      "result": [
+        "result_95",
+        "result_14",
+        "result_87"
+      ],
+      "timestamp": "2026-05-08T10:00:11.589353+00:00",
+      "call_index": 0
+    },
+    {
+      "func_name": "call_llm",
+      "args_hash": "4e06c0d3d19cecb7",
+      "result": "France's capital city is Paris.",
+      "timestamp": "2026-05-08T10:00:11.589450+00:00",
+      "call_index": 1
+    }
+  ]
+}

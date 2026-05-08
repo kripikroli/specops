@@ -1,0 +1,21 @@
+{
+  "session_id": "async-demo",
+  "seed": 123,
+  "recorded_at": "2026-05-08T10:00:12.936257+00:00",
+  "calls": [
+    {
+      "func_name": "async_llm_call",
+      "args_hash": "d48b44f006b90439",
+      "result": "The result is 1",
+      "timestamp": "2026-05-08T10:00:12.948413+00:00",
+      "call_index": 0
+    },
+    {
+      "func_name": "async_llm_call",
+      "args_hash": "e4a14bfacad6c780",
+      "result": "The result is 3",
+      "timestamp": "2026-05-08T10:00:12.959633+00:00",
+      "call_index": 1
+    }
+  ]
+}
