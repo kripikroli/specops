@@ -4,6 +4,16 @@ __version__ = "0.2.0"
 
 from specops.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
 from specops.config import configure, get_tracer, reset
+from specops.coordinate import (
+    AgentOutput,
+    BehaviorTrace,
+    CoordinationIssue,
+    CoordinationResult,
+    MemorySnapshot,
+    check_consensus,
+    check_divergence,
+    check_memory_integrity,
+)
 from specops.eval import (
     EvalCase,
     EvalResult,
@@ -32,6 +42,16 @@ from specops.replay import (
     recording,
     replayable,
     replaying,
+)
+from specops.simulate import (
+    AnomalyType,
+    SimEvent,
+    SimResult,
+    SimulationBudgetExceeded,
+    SimulationEnvironment,
+    get_current_simulation,
+    simulate,
+    simulation,
 )
 from specops.trace import trace_agent, trace_llm, trace_tool
 from specops.viz import save_dot, to_dot
@@ -83,4 +103,22 @@ __all__ = [
     # Viz
     "save_dot",
     "to_dot",
+    # Simulation
+    "AnomalyType",
+    "SimEvent",
+    "SimResult",
+    "SimulationBudgetExceeded",
+    "SimulationEnvironment",
+    "get_current_simulation",
+    "simulate",
+    "simulation",
+    # Coordination
+    "AgentOutput",
+    "BehaviorTrace",
+    "CoordinationIssue",
+    "CoordinationResult",
+    "MemorySnapshot",
+    "check_consensus",
+    "check_divergence",
+    "check_memory_integrity",
 ]
