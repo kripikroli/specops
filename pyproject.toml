@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "specops"
-version = "0.1.0"
+version = "0.2.0"
 description = "Agent Reliability Kit — OTel-native toolkit for reliable, evaluatable, debuggable LLM agents in production"
 readme = "README.md"
 license = "MIT"

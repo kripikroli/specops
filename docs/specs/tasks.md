@@ -67,6 +67,29 @@
 
 ---
 
+## Phase 3.0: Deterministic Replay + Behavioral Evaluation
+
+**Goal:** Ship replay engine and basic eval harness. Publish v0.2.0.
+
+**Prerequisites:** Phase 1.5 complete.
+
+### Tasks
+
+| # | Task | Status | Verification |
+|---|------|--------|--------------|
+| 3.0.1 | Design replay engine + eval harness (update design.md) | ✅ Done | Design spec covers types, storage, context managers |
+| 3.0.2 | Implement `ReplayStore` (JSON persistence) | ✅ Done | Save/load/list sessions |
+| 3.0.3 | Implement `recording()` / `replaying()` context managers | ✅ Done | Deterministic seed, OTel attributes |
+| 3.0.4 | Implement `@replayable` decorator (sync + async) | ✅ Done | Record/replay with args hash matching |
+| 3.0.5 | Implement `eval_golden_set` (sync + async) | ✅ Done | Comparator-based scoring |
+| 3.0.6 | Implement `llm_judge` (sync + async) | ✅ Done | JSON parsing with fallback |
+| 3.0.7 | Integrate replay with OTel tracing layer | ✅ Done | REPLAY_SEED/SESSION_ID on spans |
+| 3.0.8 | Create examples (replay_basic, eval_golden_set, replay_async_eval) | ✅ Done | All 3 examples run |
+| 3.0.9 | Write tests (25+ tests for replay + eval) | ✅ Done | `uv run pytest` passes |
+| 3.0.10 | Update README, tasks.md, design.md | ✅ Done | Docs reflect v0.2.0 |
+
+---
+
 ## Definition of Done
 
 A task is complete when:

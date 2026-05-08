@@ -94,17 +94,45 @@ def run_crew(inputs: dict) -> str:
     ...
 ```
 
-> ⚠️ SpecOps is in early development (v0.1.0). APIs will change. See the [Roadmap](ROADMAP.md).
+> ⚠️ SpecOps is in early development (v0.2.0). APIs will change. See the [Roadmap](ROADMAP.md).
+
+### Replay & Evaluation
+
+```python
+from specops import replayable, recording, replaying, eval_golden_set, EvalCase, llm_judge
+
+@replayable
+def call_llm(prompt: str) -> str:
+    # Your LLM call here
+    return "..."
+
+# Record a session
+with recording(session_id="my-session", seed=42) as session:
+    result = call_llm("What is 2+2?")
+
+# Replay deterministically
+with replaying("my-session"):
+    same_result = call_llm("What is 2+2?")  # Identical output
+
+# Golden-set evaluation
+results = eval_golden_set(
+    agent_fn=my_agent,
+    cases=[EvalCase(input="2+2", expected="4")],
+)
+
+# LLM-as-judge
+verdict = llm_judge(output, criteria="correctness", judge_fn=my_llm)
+```
 
 ## Features
 
 | Category | Status | Description |
 |----------|--------|-------------|
-| **OTel Tracing** | 🚧 Phase 1 | Trace agent runs, tool calls, LLM requests with OpenTelemetry spans |
-| **Eval Harness** | 📋 Phase 2 | Framework-agnostic evaluation: task completion, faithfulness, tool accuracy |
-| **Debug Replay** | 📋 Phase 2 | Record and replay agent sessions for deterministic debugging |
-| **Self-Healing** | 📋 Phase 3 | Circuit breakers, retry with backoff, fallback chains for LLM calls |
-| **Anomaly Detection** | 📋 Phase 3 | Detect loops, drift, and degradation in real-time |
+| **OTel Tracing** | ✅ Phase 1 | Trace agent runs, tool calls, LLM requests with OpenTelemetry spans |
+| **Replay Engine** | ✅ Phase 3.0 | Record and replay agent sessions deterministically |
+| **Eval Harness** | ✅ Phase 3.0 | Golden-set comparison + LLM-as-judge for behavioral evaluation |
+| **Self-Healing** | 📋 Phase 4 | Circuit breakers, retry with backoff, fallback chains for LLM calls |
+| **Anomaly Detection** | 📋 Phase 4 | Detect loops, drift, and degradation in real-time |
 
 ## Architecture
 

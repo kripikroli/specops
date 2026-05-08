@@ -225,19 +225,163 @@ __all__ = [
 ]
 ```
 
-## 3. Modules (Phase 2+)
+## 3. Phase 3.0 — Replay Engine + Behavioral Evaluation
 
-### 3.1 Eval Module (`specops.eval`) — Phase 2
+### 3.1 Replay Engine (`specops.replay`)
 
-(Unchanged from v0.1 design)
+The replay engine records non-deterministic function outputs (LLM calls, tool calls with external side effects) during a session, stores them, and replays them deterministically.
 
-### 3.2 Debug Module (`specops.debug`) — Phase 2
+#### 3.1.1 Architecture
 
-(Unchanged from v0.1 design)
+```
+┌─────────────────────────────────────────────┐
+│           @replayable decorator             │
+│  (wraps functions to record/replay calls)   │
+├─────────────────────────────────────────────┤
+│            ReplaySession                     │
+│  (manages recording/replaying state)        │
+├─────────────────────────────────────────────┤
+│            ReplayStore                       │
+│  (JSON file persistence of recorded calls)  │
+└─────────────────────────────────────────────┘
+```
 
-### 3.3 Heal Module (`specops.heal`) — Phase 3
+#### 3.1.2 Core Types
 
-(Unchanged from v0.1 design)
+```python
+@dataclass
+class RecordedCall:
+    """A single recorded function call."""
+    func_name: str
+    args_hash: str          # SHA-256 of serialized args for matching
+    result: Any             # The captured return value
+    timestamp: str          # ISO-8601
+    call_index: int         # Ordering within session
+
+@dataclass
+class ReplaySession:
+    """A recorded session containing all captured calls."""
+    session_id: str
+    seed: int
+    recorded_at: str
+    calls: list[RecordedCall]
+```
+
+#### 3.1.3 `@replayable` Decorator
+
+```python
+def replayable(fn: F) -> F:
+    """Mark a function as replayable.
+
+    In RECORD mode: executes normally, captures result.
+    In REPLAY mode: returns the previously recorded result (matched by func_name + args_hash).
+    """
+```
+
+#### 3.1.4 Context Manager
+
+```python
+@contextmanager
+def recording(session_id: str | None = None, seed: int | None = None) -> Iterator[ReplaySession]:
+    """Context manager to record all @replayable calls within the block."""
+
+@contextmanager
+def replaying(session: ReplaySession | str | Path) -> Iterator[ReplaySession]:
+    """Context manager to replay from a stored session (path or object)."""
+```
+
+#### 3.1.5 Storage
+
+Sessions are stored as JSON files. Default location: `.specops/replays/{session_id}.json`.
+
+```python
+class ReplayStore:
+    """Persist and load replay sessions."""
+    def __init__(self, base_dir: Path = Path(".specops/replays")): ...
+    def save(self, session: ReplaySession) -> Path: ...
+    def load(self, session_id: str) -> ReplaySession: ...
+    def list_sessions(self) -> list[str]: ...
+```
+
+#### 3.1.6 Deterministic Seeding
+
+When entering a `recording()` or `replaying()` context, the engine sets `random.seed(seed)` to ensure any random-dependent logic is reproducible. The seed is stored in the session and propagated as the `specops.replay.seed` OTel attribute.
+
+### 3.2 Behavioral Evaluation Harness (`specops.eval`)
+
+#### 3.2.1 Golden-Set Evaluation
+
+```python
+@dataclass
+class EvalCase:
+    """A single evaluation test case."""
+    input: Any
+    expected: Any
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+@dataclass
+class EvalResult:
+    """Result of evaluating one case."""
+    case: EvalCase
+    actual: Any
+    passed: bool
+    score: float            # 0.0–1.0
+    details: str = ""
+
+def eval_golden_set(
+    agent_fn: Callable,
+    cases: list[EvalCase],
+    *,
+    comparator: Callable[[Any, Any], float] | None = None,
+    threshold: float = 0.8,
+) -> list[EvalResult]:
+    """Run agent against golden-set cases and score results."""
+```
+
+#### 3.2.2 LLM-as-Judge
+
+```python
+@dataclass
+class JudgeVerdict:
+    """Verdict from an LLM judge."""
+    score: float            # 0.0–1.0
+    reasoning: str
+    criteria: str
+
+def llm_judge(
+    agent_output: Any,
+    *,
+    criteria: str,
+    judge_fn: Callable[[str], str],
+    context: str = "",
+) -> JudgeVerdict:
+    """Use an LLM to judge agent output quality.
+
+    Args:
+        agent_output: The output to evaluate.
+        criteria: What to evaluate (e.g. "correctness", "helpfulness").
+        judge_fn: A callable that takes a prompt and returns LLM text response.
+        context: Optional context about the task.
+    """
+```
+
+#### 3.2.3 Integration with Replay
+
+Evaluation can use replay sessions to ensure deterministic re-evaluation:
+
+```python
+def eval_with_replay(
+    agent_fn: Callable,
+    cases: list[EvalCase],
+    replay_dir: Path,
+    **kwargs,
+) -> list[EvalResult]:
+    """Run evaluation using replay for deterministic results."""
+```
+
+### 3.3 Heal Module (`specops.heal`) — Phase 4
+
+(Deferred to future phase)
 
 ## 4. Development Tooling
 
