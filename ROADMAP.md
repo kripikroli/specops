@@ -6,8 +6,9 @@
 
 | Phase | Focus | Timeline | Status |
 |-------|-------|----------|--------|
-| **0** | Project bootstrap & specs | Week 1 | 🚧 In Progress |
-| **1** | Core OTel tracing | Weeks 2–4 | 📋 Planned |
+| **0** | Project bootstrap & specs | Week 1 | ✅ Done |
+| **1** | Core OTel tracing | Weeks 2–4 | ✅ Done |
+| **1.5** | Framework adapters + examples | Week 4 | ✅ Done |
 | **2** | Eval harness & debug replay | Weeks 5–8 | 📋 Planned |
 | **3** | Self-healing & anomaly detection | Weeks 9–12 | 📋 Planned |
 | **4** | Multi-agent support & ecosystem | Weeks 13+ | 📋 Planned |
@@ -22,7 +23,7 @@
 - [x] `pyproject.toml` with hatch/ruff/pytest, **uv** as package manager
 - [x] README, ROADMAP, CONTRIBUTING, DEVELOPMENT.md
 - [x] `docs/specs/` with requirements, design, tasks
-- [ ] CI pipeline (GitHub Actions: `uv sync` + lint + test)
+- [x] CI pipeline (GitHub Actions: `uv sync` + lint + test)
 - [ ] Initial issue templates
 
 ## Phase 1 — Core OTel Tracing (Weeks 2–4)
@@ -84,3 +85,20 @@
 3. **OTel-native** — Built on OpenTelemetry, not a proprietary format
 4. **Production-grade** — Designed for real workloads, not just demos
 5. **Minimal footprint** — Low overhead, opt-in instrumentation
+
+---
+
+## Release Checklist (v0.1.0)
+
+Before tagging `v0.1.0`:
+
+- [x] All tests pass (`uv run pytest`)
+- [x] Lint clean (`uv run ruff check src/ tests/ examples/`)
+- [x] Type check passes (`uv run mypy src/`)
+- [x] CI pipeline green on main
+- [x] Version set to `0.1.0` in `pyproject.toml` and `__init__.py`
+- [ ] CHANGELOG.md written (or release notes in GitHub)
+- [ ] `uv build` produces valid wheel
+- [ ] Tag: `git tag v0.1.0 && git push --tags`
+- [ ] Release workflow publishes to PyPI
+- [ ] `pip install specops` works from PyPI

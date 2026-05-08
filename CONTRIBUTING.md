@@ -147,6 +147,16 @@ uv run mypy src/
 - Docstrings on all public APIs (Google style)
 - 80%+ test coverage for new code
 
+## CI Pipeline
+
+All PRs run through GitHub Actions:
+
+1. **Lint** — `ruff check` + `ruff format --check`
+2. **Type check** — `mypy src/`
+3. **Test** — `pytest` on Python 3.10, 3.11, 3.12 with coverage
+
+PRs must pass all checks before merge. See `.github/workflows/ci.yml`.
+
 ## Commit Messages
 
 Use conventional commits:

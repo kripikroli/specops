@@ -55,12 +55,23 @@ The `.python-version` file is gitignored — each developer can use their prefer
 
 ## CI
 
-GitHub Actions should use:
+GitHub Actions runs on every push to `main` and on PRs:
 
-```yaml
-- uses: astral-sh/setup-uv@v4
-- run: uv sync
-- run: uv run pytest
-- run: uv run ruff check src/ tests/
-- run: uv run mypy src/
+| Job | What it does | Command |
+|-----|-------------|---------|
+| **lint** | Ruff check + format | `uv run ruff check src/ tests/ examples/` |
+| **typecheck** | mypy strict | `uv run mypy src/` |
+| **test** | pytest on 3.10/3.11/3.12 | `uv run pytest --cov=src/specops` |
+
+See `.github/workflows/ci.yml` for the full config.
+
+### Release
+
+Releases are triggered by pushing a version tag:
+
+```bash
+git tag v0.1.0
+git push --tags
 ```
+
+This runs tests, builds the wheel, and publishes to PyPI via `.github/workflows/release.yml`.
