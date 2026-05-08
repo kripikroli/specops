@@ -19,15 +19,18 @@ def consensus_example():
     # Three agents classify the same input
     outputs = [
         AgentOutput(
-            agent="classifier-1", output="positive",
+            agent="classifier-1",
+            output="positive",
             metadata={"confidence": 0.92},
         ),
         AgentOutput(
-            agent="classifier-2", output="positive",
+            agent="classifier-2",
+            output="positive",
             metadata={"confidence": 0.87},
         ),
         AgentOutput(
-            agent="classifier-3", output="negative",
+            agent="classifier-3",
+            output="negative",
             metadata={"confidence": 0.51},
         ),
     ]

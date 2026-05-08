@@ -284,9 +284,7 @@ def simulation(
                     span.set_attribute(
                         SIM_ANOMALY,
                         ",".join(
-                            a.anomaly.value
-                            for a in result.anomalies
-                            if a.anomaly
+                            a.anomaly.value for a in result.anomalies if a.anomaly
                         ),
                     )
             _sim_ctx.reset(token)

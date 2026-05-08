@@ -195,9 +195,7 @@ class TestDivergence:
 
     def test_divergent_traces(self):
         traces = [
-            BehaviorTrace(
-                agent="a", actions=["search", "summarize", "respond"]
-            ),
+            BehaviorTrace(agent="a", actions=["search", "summarize", "respond"]),
             BehaviorTrace(
                 agent="b",
                 actions=["browse", "analyze", "critique", "rewrite", "respond"],

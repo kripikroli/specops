@@ -142,8 +142,7 @@ def check_memory_integrity(
         if len(unique) > 1:
             issues.append(CoordinationIssue.MEMORY_DIVERGENCE)
             details_parts.append(
-                f"Found {len(unique)} distinct states "
-                f"across {len(snapshots)} agents"
+                f"Found {len(unique)} distinct states across {len(snapshots)} agents"
             )
 
     # Check version ordering (detect stale reads)
