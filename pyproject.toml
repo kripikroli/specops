@@ -26,19 +26,26 @@ dependencies = [
     "opentelemetry-sdk>=1.20.0",
 ]
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-cov>=5.0.0",
-    "ruff>=0.4.0",
-    "mypy>=1.10.0",
-]
-
 [project.urls]
 Homepage = "https://github.com/specops-kit/specops"
 Documentation = "https://github.com/specops-kit/specops/tree/main/docs"
 Repository = "https://github.com/specops-kit/specops"
 Issues = "https://github.com/specops-kit/specops/issues"
+
+# Package manager: uv (https://docs.astral.sh/uv/)
+# Install deps: uv sync
+# Add runtime dep: uv add <pkg>
+# Add dev dep: uv add --dev <pkg>
+# Run commands: uv run <cmd>
+
+[dependency-groups]
+dev = [
+    "mypy>=2.0.0",
+    "pytest>=9.0.3",
+    "pytest-asyncio>=1.3.0",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.15.12",
+]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/specops"]

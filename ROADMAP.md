@@ -19,10 +19,10 @@
 **Goal:** Professional project structure, specs, and contribution workflow.
 
 - [x] Repository setup (MIT license, .gitignore)
-- [x] `pyproject.toml` with hatch/ruff/pytest
-- [x] README, ROADMAP, CONTRIBUTING
+- [x] `pyproject.toml` with hatch/ruff/pytest, **uv** as package manager
+- [x] README, ROADMAP, CONTRIBUTING, DEVELOPMENT.md
 - [x] `docs/specs/` with requirements, design, tasks
-- [ ] CI pipeline (GitHub Actions: lint + test)
+- [ ] CI pipeline (GitHub Actions: `uv sync` + lint + test)
 - [ ] Initial issue templates
 
 ## Phase 1 — Core OTel Tracing (Weeks 2–4)
@@ -38,7 +38,7 @@
 - [ ] Example: trace a LangChain agent end-to-end
 - [ ] Example: trace a custom agent
 - [ ] 80%+ test coverage on tracing module
-- [ ] Publish to PyPI (v0.1.0)
+- [ ] Publish to PyPI (v0.1.0) via `uv publish`
 
 ## Phase 2 — Eval Harness & Debug Replay (Weeks 5–8)
 

@@ -152,7 +152,19 @@ default_retry_attempts = 3
 circuit_breaker_threshold = 5
 ```
 
-## 4. Trade-offs & Decisions
+## 4. Development Tooling
+
+| Tool | Purpose | Command |
+|------|---------|---------|
+| **uv** | Package manager & virtualenv | `uv sync`, `uv add`, `uv run` |
+| **hatch** | Build backend | via `uv build` |
+| **ruff** | Lint + format | `uv run ruff check`, `uv run ruff format` |
+| **mypy** | Type checking | `uv run mypy src/` |
+| **pytest** | Testing | `uv run pytest` |
+
+All commands are run through `uv run` to ensure the correct virtualenv and dependencies. The `uv.lock` file is committed for reproducible installs across all environments.
+
+## 5. Trade-offs & Decisions
 
 | Decision | Rationale |
 |----------|-----------|

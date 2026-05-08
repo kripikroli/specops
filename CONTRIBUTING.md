@@ -115,26 +115,27 @@ Once the spec is approved:
 
 ## Development Setup
 
+We use [**uv**](https://docs.astral.sh/uv/) as our package manager. See [DEVELOPMENT.md](DEVELOPMENT.md) for full details.
+
 ```bash
 # Clone
 git clone https://github.com/specops-kit/specops.git
 cd specops
 
-# Create virtual environment
-python -m venv .venv
-source .venv/bin/activate
+# Install uv (if not already installed)
+curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# Install in dev mode
-pip install -e ".[dev]"
+# Install all dependencies (creates .venv automatically)
+uv sync
 
 # Run tests
-pytest
+uv run pytest
 
 # Lint
-ruff check src/ tests/
+uv run ruff check src/ tests/
 
 # Type check
-mypy src/
+uv run mypy src/
 ```
 
 ## Code Standards

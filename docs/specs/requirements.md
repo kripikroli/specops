@@ -53,6 +53,7 @@ LLM-based agents and multi-agent systems lack production-grade reliability tooli
 - **NFR-3: Extensibility** — Plugin architecture for custom metrics, exporters, and healing strategies
 - **NFR-4: Minimal Dependencies** — Core depends only on `opentelemetry-api` and `opentelemetry-sdk`
 - **NFR-5: Developer Experience** — Decorator-based API, zero-config defaults, progressive disclosure
+- **NFR-6: Tooling** — Uses `uv` as package manager; all dev commands via `uv run`; lockfile (`uv.lock`) committed for reproducibility
 
 ## 5. Out of Scope (v0.1)
 
