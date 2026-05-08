@@ -73,3 +73,30 @@ def get_adapter(framework: str) -> BaseAdapter:
 def register_adapter(framework: str, adapter_cls: type[BaseAdapter]) -> None:
     """Register a custom adapter for a framework."""
     _ADAPTERS[framework] = adapter_cls
+
+
+def _auto_register() -> None:
+    """Auto-register framework adapters if their libraries are available."""
+    try:
+        from specops.adapters.langgraph import LangGraphAdapter
+
+        _ADAPTERS.setdefault("langgraph", LangGraphAdapter)
+    except ImportError:
+        pass
+
+    try:
+        from specops.adapters.crewai import CrewAIAdapter
+
+        _ADAPTERS.setdefault("crewai", CrewAIAdapter)
+    except ImportError:
+        pass
+
+    try:
+        from specops.adapters.autogen import AutoGenAdapter
+
+        _ADAPTERS.setdefault("autogen", AutoGenAdapter)
+    except ImportError:
+        pass
+
+
+_auto_register()

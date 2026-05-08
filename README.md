@@ -42,14 +42,55 @@ Framework-agnostic. Works with LangChain, CrewAI, AutoGen, custom agents, or any
 
 ```bash
 pip install specops
+
+# Optional framework support
+pip install specops[langgraph]
+pip install specops[crewai]
+pip install specops[all]
 ```
 
-```python
-from specops import trace_agent
+### Plain Python
 
-@trace_agent(name="my-agent")
-async def run_agent(task: str):
-    # Your agent logic here
+```python
+from specops import trace_agent, trace_tool, trace_llm
+
+@trace_tool(name="search")
+def search(query: str) -> list[str]:
+    return ["result1", "result2"]
+
+@trace_llm(model="gpt-4o", provider="openai")
+def call_llm(prompt: str) -> dict:
+    return {"text": "...", "model": "gpt-4o", "input_tokens": 10, "output_tokens": 25}
+
+@trace_agent(name="research-agent")
+def agent(task: str) -> str:
+    results = search(task)
+    return call_llm(f"Summarize: {results}")["text"]
+```
+
+### LangGraph
+
+```python
+from specops import trace_agent, trace_tool
+
+@trace_tool(name="calculator")
+def calculator(expr: str) -> str:
+    return str(eval(expr))
+
+@trace_agent(name="math-agent", framework="langgraph")
+def run_graph(state: dict) -> str:
+    # Your StateGraph logic here
+    return calculator(state["input"])
+```
+
+### CrewAI
+
+```python
+from specops import trace_agent, trace_llm
+
+@trace_agent(name="content-crew", framework="crewai")
+def run_crew(inputs: dict) -> str:
+    # Your Crew(agents=[...], tasks=[...]).kickoff() here
     ...
 ```
 

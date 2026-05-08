@@ -173,6 +173,17 @@ class PlainAdapter(BaseAdapter):
     ...
 ```
 
+#### Concrete Adapters (Phase 1.5)
+
+| Adapter | Framework | Key Patterns |
+|---------|-----------|--------------|
+| `PlainAdapter` | Plain Python | First arg = task, dict results |
+| `LangGraphAdapter` | LangGraph | StateGraph state dicts, AIMessage, ToolMessage |
+| `CrewAIAdapter` | CrewAI | Task objects, kickoff inputs, token_usage |
+| `AutoGenAdapter` | AutoGen (stub) | Message content, initiate_chat args |
+
+Adapters are auto-registered on import via `_auto_register()`. Framework libraries are optional — adapters gracefully degrade if the framework is not installed.
+
 Adapters are selected via the `framework=` parameter on `@trace_agent` or auto-detected.
 
 ### 2.5 Configuration (`specops.config`)

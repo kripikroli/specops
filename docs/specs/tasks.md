@@ -45,6 +45,28 @@
 
 ---
 
+## Phase 1.5: Framework Adapters + Examples
+
+**Goal:** Concrete adapters for popular frameworks, high-quality examples, updated docs.
+
+**Prerequisites:** Phase 1 core tracing complete.
+
+### Tasks
+
+| # | Task | Status | Verification |
+|---|------|--------|--------------|
+| 1.5.1 | Convert `adapters.py` to `adapters/` package | ✅ Done | Package imports work |
+| 1.5.2 | Implement `LangGraphAdapter` | ✅ Done | Handles StateGraph state, AIMessage, ToolMessage |
+| 1.5.3 | Implement `CrewAIAdapter` | ✅ Done | Handles Task objects, kickoff inputs, token_usage |
+| 1.5.4 | Implement `AutoGenAdapter` (stub) | ✅ Done | Basic chat pattern support |
+| 1.5.5 | Auto-register adapters via `_auto_register()` | ✅ Done | Graceful ImportError handling |
+| 1.5.6 | Add optional deps to `pyproject.toml` | ✅ Done | `pip install specops[langgraph]` works |
+| 1.5.7 | Create examples (plain, langgraph, crewai, async) | ✅ Done | All 4 examples run |
+| 1.5.8 | Update README.md with quickstart examples | ✅ Done | Shows all 3 frameworks |
+| 1.5.9 | Update design.md and tasks.md | ✅ Done | Specs reflect current state |
+
+---
+
 ## Definition of Done
 
 A task is complete when:
