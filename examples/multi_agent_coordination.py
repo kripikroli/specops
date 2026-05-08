@@ -18,9 +18,18 @@ def consensus_example():
     """Check if multiple agents agree on a classification task."""
     # Three agents classify the same input
     outputs = [
-        AgentOutput(agent="classifier-1", output="positive", metadata={"confidence": 0.92}),
-        AgentOutput(agent="classifier-2", output="positive", metadata={"confidence": 0.87}),
-        AgentOutput(agent="classifier-3", output="negative", metadata={"confidence": 0.51}),
+        AgentOutput(
+            agent="classifier-1", output="positive",
+            metadata={"confidence": 0.92},
+        ),
+        AgentOutput(
+            agent="classifier-2", output="positive",
+            metadata={"confidence": 0.87},
+        ),
+        AgentOutput(
+            agent="classifier-3", output="negative",
+            metadata={"confidence": 0.51},
+        ),
     ]
 
     # Require unanimous agreement
@@ -38,9 +47,21 @@ def memory_integrity_example():
     """Verify agents have consistent shared state."""
     # Agents reading from shared memory
     snapshots = [
-        MemorySnapshot(agent="writer", state={"counter": 42, "status": "active"}, version=5),
-        MemorySnapshot(agent="reader-1", state={"counter": 42, "status": "active"}, version=5),
-        MemorySnapshot(agent="reader-2", state={"counter": 40, "status": "active"}, version=3),
+        MemorySnapshot(
+            agent="writer",
+            state={"counter": 42, "status": "active"},
+            version=5,
+        ),
+        MemorySnapshot(
+            agent="reader-1",
+            state={"counter": 42, "status": "active"},
+            version=5,
+        ),
+        MemorySnapshot(
+            agent="reader-2",
+            state={"counter": 40, "status": "active"},
+            version=3,
+        ),
     ]
 
     result = check_memory_integrity(snapshots)

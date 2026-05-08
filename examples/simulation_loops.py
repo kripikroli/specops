@@ -17,7 +17,10 @@ def run_with_context_manager():
         for action in actions:
             event = sim.record("research-agent", action)
             if event.anomaly:
-                print(f"⚠️  Anomaly detected at step {event.step}: {event.anomaly.value}")
+                print(
+                    f"⚠️  Anomaly at step {event.step}: "
+                    f"{event.anomaly.value}"
+                )
                 break
 
         result = sim.stop()

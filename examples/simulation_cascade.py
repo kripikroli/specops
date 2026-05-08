@@ -7,7 +7,6 @@ to test how agents recover from cascading failures.
 from specops import (
     FallbackPolicy,
     RetryPolicy,
-    SimulationEnvironment,
     self_healing,
     simulation,
 )

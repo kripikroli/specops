@@ -27,7 +27,6 @@ from specops import (
 )
 from specops.simulate import get_current_simulation
 
-
 # === Simulation Environment Tests ===
 
 
@@ -196,8 +195,13 @@ class TestDivergence:
 
     def test_divergent_traces(self):
         traces = [
-            BehaviorTrace(agent="a", actions=["search", "summarize", "respond"]),
-            BehaviorTrace(agent="b", actions=["browse", "analyze", "critique", "rewrite", "respond"]),
+            BehaviorTrace(
+                agent="a", actions=["search", "summarize", "respond"]
+            ),
+            BehaviorTrace(
+                agent="b",
+                actions=["browse", "analyze", "critique", "rewrite", "respond"],
+            ),
         ]
         result = check_divergence(traces, max_edit_distance=2)
         assert not result.passed
@@ -223,16 +227,20 @@ class TestSimulationReplayIntegration:
             return f"response to: {prompt}"
 
         # Record inside simulation
-        with simulation("replay-sim", max_steps=10) as sim:
-            with recording(session_id="sim-session", seed=42, store=store) as session:
-                result = fake_llm("hello")
-                sim.record("agent", "llm_call", result=result)
+        with (
+            simulation("replay-sim", max_steps=10) as sim,
+            recording(session_id="sim-session", seed=42, store=store),
+        ):
+            result = fake_llm("hello")
+            sim.record("agent", "llm_call", result=result)
 
         # Replay inside simulation
-        with simulation("replay-sim-2", max_steps=10) as sim:
-            with replaying("sim-session", store=store):
-                replayed = fake_llm("hello")
-                sim.record("agent", "llm_call", result=replayed)
+        with (
+            simulation("replay-sim-2", max_steps=10) as sim,
+            replaying("sim-session", store=store),
+        ):
+            replayed = fake_llm("hello")
+            sim.record("agent", "llm_call", result=replayed)
 
         assert result == replayed
 
