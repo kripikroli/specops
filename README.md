@@ -1,5 +1,5 @@
 <p align="center">
-  <h1 align="center">🛠️ SpecOps</h1>
+  <h1 align="center">🛠️ SpecOps AI</h1>
   <p align="center"><strong>Agent Reliability Kit</strong></p>
   <p align="center">
     Framework-agnostic, OTel-native toolkit for reliable, evaluatable, debuggable, and self-healing LLM agents in production.
