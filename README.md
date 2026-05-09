@@ -11,7 +11,7 @@
   <a href="https://pypi.org/project/specops-ai/"><img src="https://img.shields.io/pypi/pyversions/specops-ai?cacheSeconds=3600" alt="Python versions"></a>
   <a href="https://github.com/kripikroli/specops-ai/actions"><img src="https://img.shields.io/github/actions/workflow/status/kripikroli/specops-ai/ci.yml?branch=main" alt="CI"></a>
   <a href="https://codecov.io/gh/kripikroli/specops-ai"><img src="https://img.shields.io/codecov/c/github/kripikroli/specops-ai?color=brightgreen" alt="Coverage"></a>
-  <a href="https://github.com/kripikroli/specops-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kripikroli/specops-ai" alt="License"></a>
+  <a href="https://github.com/kripikroli/specops-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kripikroli/specops-ai?color=cacheSeconds=3600" alt="License"></a>
 </p>
 
 <p align="center">
