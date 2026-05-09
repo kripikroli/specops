@@ -5,14 +5,16 @@ build-backend = "hatchling.build"
 [project]
 name = "specops"
 version = "0.2.0"
-description = "Agent Reliability Kit — OTel-native toolkit for reliable, evaluatable, debuggable LLM agents in production"
+description = "Framework-agnostic, OTel-native toolkit for reliable, evaluatable, debuggable, and self-healing LLM agents in production"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
-authors = [{ name = "SpecOps Contributors" }]
+authors = [
+    { name = "A-aron Paul Luminding", email = "luminding.aaron420@gmail.com" }
+]
 keywords = ["llm", "agents", "observability", "opentelemetry", "reliability", "evaluation"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
@@ -27,17 +29,17 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/specops-kit/specops"
-Documentation = "https://github.com/specops-kit/specops/tree/main/docs"
-Repository = "https://github.com/specops-kit/specops"
-Issues = "https://github.com/specops-kit/specops/issues"
+Homepage = "https://github.com/kripikroli/specops"
+Documentation = "https://github.com/kripikroli/specops/tree/main/docs"
+Repository = "https://github.com/kripikroli/specops"
+Issues = "https://github.com/kripikroli/specops/issues"
 
 [project.optional-dependencies]
 langgraph = ["langgraph>=0.2.0", "langchain-core>=0.3.0"]
 crewai = ["crewai>=0.80.0"]
 all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0"]
 
-# Package manager: uv (https://docs.astral.sh/uv/)
+# Package manager: uv[](https://docs.astral.sh/uv/)
 # Install deps: uv sync
 # Add runtime dep: uv add <pkg>
 # Add dev dep: uv add --dev <pkg>
