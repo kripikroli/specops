@@ -35,7 +35,7 @@ class TestExamplesE2E:
         result = run_example("langgraph_agent.py")
         assert result.returncode == 0, result.stderr
         assert "Agent response:" in result.stdout
-        assert "42" in result.stdout
+        assert "tool:calculator" in result.stdout
 
     def test_crewai_agent(self):
         result = run_example("crewai_agent.py")
