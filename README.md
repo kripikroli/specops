@@ -244,8 +244,35 @@ specops/
 │   └── adapters/         # Framework adapters
 ├── tests/                # Test suite (120+ tests)
 ├── examples/             # Usage examples
+│   ├── providers/        # Provider-specific (require API keys)
+│   │   ├── openai/       # OpenAI / LangGraph examples
+│   │   ├── anthropic/    # Anthropic examples (coming soon)
+│   │   └── grok/         # Grok examples (coming soon)
+│   └── shared/           # Shared utilities (key loading, graceful skip)
 ├── docs/specs/           # Specifications
 └── pyproject.toml        # Build config (hatch + ruff + pytest)
+```
+
+## Running Examples
+
+Core examples (no API key needed):
+
+```bash
+uv run examples/plain_agent.py
+uv run examples/async_pipeline.py
+```
+
+Provider examples require API keys. Copy `.env.example` to `.env` and fill in your keys:
+
+```bash
+cp .env.example .env     # Add your OPENAI_API_KEY
+uv run examples/providers/openai/langgraph_agent.py
+```
+
+Provider examples exit gracefully with a helpful message if the required key is missing. Set `SPECOPS_EXAMPLE_MODE=mock` to run without a real API key:
+
+```bash
+SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/openai/langgraph_agent.py
 ```
 
 ## Contributing
