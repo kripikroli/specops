@@ -9,9 +9,9 @@
 <p align="center">
   <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/v/specops?color=blue" alt="PyPI"></a>
   <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/pyversions/specops" alt="Python"></a>
-  <a href="https://github.com/specops-kit/specops/actions"><img src="https://img.shields.io/github/actions/workflow/status/specops-kit/specops/ci.yml?branch=main" alt="CI"></a>
-  <a href="https://codecov.io/gh/specops-kit/specops"><img src="https://img.shields.io/codecov/c/github/specops-kit/specops?color=green" alt="Coverage"></a>
-  <a href="https://github.com/specops-kit/specops/blob/main/LICENSE"><img src="https://img.shields.io/github/license/specops-kit/specops" alt="License"></a>
+  <a href="https://github.com/kripikroli/specops/actions"><img src="https://img.shields.io/github/actions/workflow/status/kripikroli/specops/ci.yml?branch=main" alt="CI"></a>
+  <a href="https://codecov.io/gh/kripikroli/specops"><img src="https://img.shields.io/codecov/c/github/specops-kit/specops?color=green" alt="Coverage"></a>
+  <a href="https://github.com/kripikroli/specops/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kripikroli/specops" alt="License"></a>
 </p>
 
 <p align="center">
