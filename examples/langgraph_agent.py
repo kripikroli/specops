@@ -24,11 +24,10 @@ load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 import os  # noqa: E402
 
 if not os.environ.get("OPENAI_API_KEY"):
-    print("ERROR: OPENAI_API_KEY not set.")
-    print("Create a .env file in the project root with:")
-    print("  OPENAI_API_KEY=sk-...")
-    print("(See .env.example)")
-    sys.exit(1)
+    print("[SKIP] OPENAI_API_KEY not set.")
+    print("  To run this live example, create .env with OPENAI_API_KEY=...")
+    print("  (See .env.example)")
+    sys.exit(0)
 
 from langchain_core.messages import HumanMessage  # noqa: E402
 from langchain_core.tools import tool  # noqa: E402
