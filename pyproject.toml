@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "specops"
+name = "specops-ai"
 version = "0.2.0"
 description = "Framework-agnostic, OTel-native toolkit for reliable, evaluatable, debuggable, and self-healing LLM agents in production"
 readme = "README.md"
@@ -29,10 +29,10 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kripikroli/specops"
-Documentation = "https://github.com/kripikroli/specops/tree/main/docs"
-Repository = "https://github.com/kripikroli/specops"
-Issues = "https://github.com/kripikroli/specops/issues"
+Homepage = "https://github.com/kripikroli/specops-ai"
+Documentation = "https://github.com/kripikroli/specops-ai/tree/main/docs"
+Repository = "https://github.com/kripikroli/specops-ai"
+Issues = "https://github.com/kripikroli/specops-ai/issues"
 
 [project.optional-dependencies]
 langgraph = ["langgraph>=0.2.0", "langchain-core>=0.3.0"]
@@ -55,7 +55,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/specops"]
+packages = ["src/specops_ai"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

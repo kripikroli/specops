@@ -4,7 +4,7 @@ Demonstrates using the simulation sandbox to catch agents that get stuck
 repeating the same action indefinitely.
 """
 
-from specops import SimulationEnvironment, simulate, simulation
+from specops_ai import SimulationEnvironment, simulate, simulation
 
 # --- Using the context manager ---
 

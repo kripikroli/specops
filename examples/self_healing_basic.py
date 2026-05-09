@@ -5,7 +5,7 @@ LLM provider failures using retry with backoff and fallback to a
 cheaper model.
 """
 
-from specops import (
+from specops_ai import (
     FallbackPolicy,
     RetryPolicy,
     self_healing,

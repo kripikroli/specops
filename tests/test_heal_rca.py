@@ -8,8 +8,8 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
-import specops
-from specops import (
+import specops_ai
+from specops_ai import (
     EscalatePolicy,
     FallbackPolicy,
     HealingChain,
@@ -24,13 +24,13 @@ from specops import (
     trace_agent,
     trace_llm,
 )
-from specops.heal import HEAL_OUTCOME, HEAL_POLICY
+from specops_ai.heal import HEAL_OUTCOME, HEAL_POLICY
 
 
 @pytest.fixture(autouse=True)
 def _setup_tracer(monkeypatch: pytest.MonkeyPatch):
     """Set up in-memory exporter for each test."""
-    specops.reset()
+    specops_ai.reset()
 
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
@@ -41,8 +41,10 @@ def _setup_tracer(monkeypatch: pytest.MonkeyPatch):
     )
     trace.set_tracer_provider(provider)
 
-    monkeypatch.setattr("specops.config._configured", True)
-    monkeypatch.setattr("specops.config._tracer", provider.get_tracer("specops-test"))
+    monkeypatch.setattr("specops_ai.config._configured", True)
+    monkeypatch.setattr(
+        "specops_ai.config._tracer", provider.get_tracer("specops-test")
+    )
 
     yield exporter
 

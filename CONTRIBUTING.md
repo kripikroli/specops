@@ -25,7 +25,7 @@ Thank you for your interest in SpecOps! We use **spec-driven development** — e
 
 ### 1. Pick or Propose Work
 
-- Check [open issues](https://github.com/specops-kit/specops/issues) for `good-first-issue` or `help-wanted`
+- Check [open issues](https://github.com/kripikroli/specops-ai/issues) for `good-first-issue` or `help-wanted`
 - Or open a new issue describing what you'd like to build
 
 ### 2. Write a Spec
@@ -119,8 +119,8 @@ We use [**uv**](https://docs.astral.sh/uv/) as our package manager. See [DEVELOP
 
 ```bash
 # Clone
-git clone https://github.com/specops-kit/specops.git
-cd specops
+git clone https://github.com/kripikroli/specops-ai.git
+cd specops-ai
 
 # Install uv (if not already installed)
 curl -LsSf https://astral.sh/uv/install.sh | sh

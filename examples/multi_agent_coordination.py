@@ -4,7 +4,7 @@ Demonstrates consensus checking, memory integrity validation,
 and behavioral divergence detection across cooperating agents.
 """
 
-from specops import (
+from specops_ai import (
     AgentOutput,
     BehaviorTrace,
     MemorySnapshot,

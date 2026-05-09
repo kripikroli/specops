@@ -7,11 +7,11 @@
 </p>
 
 <p align="center">
-  <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/v/specops?color=blue" alt="PyPI"></a>
-  <a href="https://pypi.org/project/specops/"><img src="https://img.shields.io/pypi/pyversions/specops" alt="Python"></a>
-  <a href="https://github.com/kripikroli/specops/actions"><img src="https://img.shields.io/github/actions/workflow/status/kripikroli/specops/ci.yml?branch=main" alt="CI"></a>
-  <a href="https://codecov.io/gh/kripikroli/specops"><img src="https://img.shields.io/codecov/c/github/specops-kit/specops?color=green" alt="Coverage"></a>
-  <a href="https://github.com/kripikroli/specops/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kripikroli/specops" alt="License"></a>
+  <a href="https://pypi.org/project/specops-ai/"><img src="https://img.shields.io/pypi/v/specops-ai?color=blue" alt="PyPI"></a>
+  <a href="https://pypi.org/project/specops-ai/"><img src="https://img.shields.io/pypi/pyversions/specops-ai" alt="Python"></a>
+  <a href="https://github.com/kripikroli/specops-ai/actions"><img src="https://img.shields.io/github/actions/workflow/status/kripikroli/specops-ai/ci.yml?branch=main" alt="CI"></a>
+  <a href="https://codecov.io/gh/kripikroli/specops-ai"><img src="https://img.shields.io/codecov/c/github/kripikroli/specops-ai?color=green" alt="Coverage"></a>
+  <a href="https://github.com/kripikroli/specops-ai/blob/main/LICENSE"><img src="https://img.shields.io/github/license/kripikroli/specops-ai" alt="License"></a>
 </p>
 
 <p align="center">
@@ -40,21 +40,21 @@ LLM agents fail silently. They hallucinate, loop, drift off-task, and degrade wi
 ### Installation
 
 ```bash
-pip install specops
+pip install specops-ai
 ```
 
 With framework adapters:
 
 ```bash
-pip install specops[langgraph]   # LangGraph support
-pip install specops[crewai]      # CrewAI support
-pip install specops[all]         # All adapters
+pip install specops-ai[langgraph]   # LangGraph support
+pip install specops-ai[crewai]      # CrewAI support
+pip install specops-ai[all]         # All adapters
 ```
 
 ### One-Line Quickstart
 
 ```python
-from specops import trace_agent
+from specops_ai import trace_agent
 
 @trace_agent(name="my-agent")
 def agent(task: str) -> str:
@@ -64,7 +64,7 @@ def agent(task: str) -> str:
 ### Trace Any Agent
 
 ```python
-from specops import trace_agent, trace_tool, trace_llm
+from specops_ai import trace_agent, trace_tool, trace_llm
 
 @trace_tool(name="search")
 def search(query: str) -> list[str]:
@@ -83,7 +83,7 @@ def agent(task: str) -> str:
 ### Record & Replay
 
 ```python
-from specops import replayable, recording, replaying
+from specops_ai import replayable, recording, replaying
 
 @replayable
 def call_llm(prompt: str) -> str:
@@ -101,7 +101,7 @@ with replaying("session-1"):
 ### Self-Healing
 
 ```python
-from specops import self_healing, RetryPolicy, FallbackPolicy
+from specops_ai import self_healing, RetryPolicy, FallbackPolicy
 
 @self_healing(
     retry=RetryPolicy(max_retries=3, base_delay=0.5),
@@ -114,7 +114,7 @@ def call_llm(prompt: str) -> str:
 ### Simulation Sandbox
 
 ```python
-from specops import simulation
+from specops_ai import simulation
 
 with simulation("loop-test", max_steps=50, loop_threshold=3) as sim:
     for action in agent_actions:
@@ -128,7 +128,7 @@ with simulation("loop-test", max_steps=50, loop_threshold=3) as sim:
 ### Multi-Agent Coordination
 
 ```python
-from specops import check_consensus, check_divergence, AgentOutput, BehaviorTrace
+from specops_ai import check_consensus, check_divergence, AgentOutput, BehaviorTrace
 
 # Consensus check
 result = check_consensus([
@@ -147,7 +147,7 @@ result = check_divergence([
 ### Evaluation
 
 ```python
-from specops import eval_golden_set, EvalCase, llm_judge
+from specops_ai import eval_golden_set, EvalCase, llm_judge
 
 results = eval_golden_set(
     agent_fn=my_agent,
@@ -160,7 +160,7 @@ verdict = llm_judge(output, criteria="correctness", judge_fn=my_llm)
 ### RCA Graph
 
 ```python
-from specops import build_rca_graph, to_dot
+from specops_ai import build_rca_graph, to_dot
 
 graph = build_rca_graph(spans)
 print(f"Root causes: {[n.name for n in graph.root_causes]}")
@@ -192,7 +192,7 @@ The simulation sandbox lets you test agent behaviors in a controlled environment
 - **OTel integration** — All simulation events produce spans for analysis
 
 ```python
-from specops import simulate, SimulationEnvironment
+from specops_ai import simulate, SimulationEnvironment
 
 @simulate("my-scenario", max_steps=100, token_budget=10000)
 def test_agent(sim: SimulationEnvironment):
@@ -233,7 +233,7 @@ Built-in checks for multi-agent systems:
 
 ```
 specops/
-├── src/specops/          # Core library
+├── src/specops_ai/       # Core library
 │   ├── trace.py          # OTel tracing decorators
 │   ├── replay.py         # Record/replay engine
 │   ├── eval.py           # Evaluation harness

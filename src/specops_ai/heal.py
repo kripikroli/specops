@@ -18,7 +18,7 @@ from typing import Any, TypeVar
 
 from opentelemetry import trace
 
-from specops.config import get_tracer
+from specops_ai.config import get_tracer
 
 F = TypeVar("F", bound=Callable[..., Any])
 

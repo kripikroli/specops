@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import asyncio
 
-from specops import trace_agent, trace_llm, trace_tool
+from specops_ai import trace_agent, trace_llm, trace_tool
 
 
 @trace_tool(name="fetch_data")

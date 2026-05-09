@@ -7,15 +7,15 @@ from typing import Any
 
 import pytest
 
-from specops.adapters import (
+from specops_ai.adapters import (
     _ADAPTERS,
     PlainAdapter,
     get_adapter,
     register_adapter,
 )
-from specops.adapters.autogen import AutoGenAdapter
-from specops.adapters.crewai import CrewAIAdapter
-from specops.adapters.langgraph import LangGraphAdapter
+from specops_ai.adapters.autogen import AutoGenAdapter
+from specops_ai.adapters.crewai import CrewAIAdapter
+from specops_ai.adapters.langgraph import LangGraphAdapter
 
 
 class TestAdapterRegistry:

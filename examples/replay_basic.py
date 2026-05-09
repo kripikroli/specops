@@ -6,7 +6,7 @@ to capture non-deterministic LLM calls and replay them deterministically.
 
 import random
 
-from specops import recording, replayable, replaying, trace_agent, trace_tool
+from specops_ai import recording, replayable, replaying, trace_agent, trace_tool
 
 
 @replayable

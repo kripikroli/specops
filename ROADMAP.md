@@ -75,9 +75,9 @@
 
 ## Phase 5 — CLI Tooling + Dashboards (Planned)
 
-- [ ] `specops eval run` CLI command
-- [ ] `specops replay` CLI command
-- [ ] `specops sim` CLI for running simulation scenarios
+- [ ] `specops-ai eval run` CLI command
+- [ ] `specops-ai replay` CLI command
+- [ ] `specops-ai sim` CLI for running simulation scenarios
 - [ ] Grafana dashboard templates
 - [ ] Datadog integration guide
 - [ ] HTML report generation for eval results

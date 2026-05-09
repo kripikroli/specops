@@ -17,7 +17,7 @@ from dataclasses import dataclass, field
 from enum import Enum
 from typing import Any, TypeVar
 
-from specops.config import get_tracer
+from specops_ai.config import get_tracer
 
 F = TypeVar("F", bound=Callable[..., Any])
 logger = logging.getLogger("specops.simulate")

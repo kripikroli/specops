@@ -6,7 +6,7 @@ No external dependencies required — produces DOT strings directly.
 
 from __future__ import annotations
 
-from specops.rca import RCAGraph
+from specops_ai.rca import RCAGraph
 
 
 def to_dot(graph: RCAGraph, *, title: str = "RCA Graph") -> str:

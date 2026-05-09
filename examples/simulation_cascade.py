@@ -4,7 +4,7 @@ Demonstrates combining the simulation sandbox with self-healing policies
 to test how agents recover from cascading failures.
 """
 
-from specops import (
+from specops_ai import (
     FallbackPolicy,
     RetryPolicy,
     self_healing,

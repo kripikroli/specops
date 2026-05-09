@@ -2,9 +2,9 @@
 
 __version__ = "0.2.0"
 
-from specops.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
-from specops.config import configure, get_tracer, reset
-from specops.coordinate import (
+from specops_ai.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
+from specops_ai.config import configure, get_tracer, reset
+from specops_ai.coordinate import (
     AgentOutput,
     BehaviorTrace,
     CoordinationIssue,
@@ -14,7 +14,7 @@ from specops.coordinate import (
     check_divergence,
     check_memory_integrity,
 )
-from specops.eval import (
+from specops_ai.eval import (
     EvalCase,
     EvalResult,
     JudgeVerdict,
@@ -23,7 +23,7 @@ from specops.eval import (
     llm_judge,
     llm_judge_async,
 )
-from specops.heal import (
+from specops_ai.heal import (
     EscalatePolicy,
     FallbackPolicy,
     HealingChain,
@@ -33,8 +33,8 @@ from specops.heal import (
     RetryPolicy,
     self_healing,
 )
-from specops.rca import RCAEdge, RCAGraph, RCANode, build_rca_graph
-from specops.replay import (
+from specops_ai.rca import RCAEdge, RCAGraph, RCANode, build_rca_graph
+from specops_ai.replay import (
     RecordedCall,
     ReplayMismatchError,
     ReplaySession,
@@ -43,7 +43,7 @@ from specops.replay import (
     replayable,
     replaying,
 )
-from specops.simulate import (
+from specops_ai.simulate import (
     AnomalyType,
     SimEvent,
     SimResult,
@@ -53,8 +53,8 @@ from specops.simulate import (
     simulate,
     simulation,
 )
-from specops.trace import trace_agent, trace_llm, trace_tool
-from specops.viz import save_dot, to_dot
+from specops_ai.trace import trace_agent, trace_llm, trace_tool
+from specops_ai.viz import save_dot, to_dot
 
 __all__ = [
     # Adapters

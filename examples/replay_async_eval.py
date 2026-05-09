@@ -7,7 +7,7 @@ deterministically using replay + golden-set comparison.
 import asyncio
 import random
 
-from specops import (
+from specops_ai import (
     EvalCase,
     eval_golden_set_async,
     recording,

@@ -22,7 +22,7 @@ from typing import Any, TypeVar
 
 from opentelemetry import trace
 
-from specops._constants import REPLAY_SEED, REPLAY_SESSION_ID
+from specops_ai._constants import REPLAY_SEED, REPLAY_SESSION_ID
 
 F = TypeVar("F", bound=Callable[..., Any])
 

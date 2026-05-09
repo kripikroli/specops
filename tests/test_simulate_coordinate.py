@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from specops import (
+from specops_ai import (
     AgentOutput,
     AnomalyType,
     BehaviorTrace,
@@ -25,7 +25,7 @@ from specops import (
     simulate,
     simulation,
 )
-from specops.simulate import get_current_simulation
+from specops_ai.simulate import get_current_simulation
 
 # === Simulation Environment Tests ===
 
@@ -216,7 +216,7 @@ class TestDivergence:
 
 class TestSimulationReplayIntegration:
     def test_simulation_with_replay(self, tmp_path):
-        from specops.replay import ReplayStore
+        from specops_ai.replay import ReplayStore
 
         store = ReplayStore(base_dir=tmp_path)
 

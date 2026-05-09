@@ -9,20 +9,20 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
-import specops
-from specops import build_rca_graph, to_dot, trace_agent, trace_llm, trace_tool
+import specops_ai
+from specops_ai import build_rca_graph, to_dot, trace_agent, trace_llm, trace_tool
 
 
 def setup_tracing() -> InMemorySpanExporter:
     """Set up in-memory tracing for RCA analysis."""
     from opentelemetry import trace
 
-    specops.reset()
+    specops_ai.reset()
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
     provider.add_span_processor(SimpleSpanProcessor(exporter))
     trace.set_tracer_provider(provider)
-    specops.configure()
+    specops_ai.configure()
     return exporter
 
 

@@ -4,7 +4,7 @@ Demonstrates how to evaluate an agent against a set of expected outputs
 and use an LLM judge to assess process quality.
 """
 
-from specops import EvalCase, eval_golden_set, llm_judge, trace_agent
+from specops_ai import EvalCase, eval_golden_set, llm_judge, trace_agent
 
 
 @trace_agent(name="qa-agent")

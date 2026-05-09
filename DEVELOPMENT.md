@@ -12,8 +12,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ## Getting Started
 
 ```bash
-git clone https://github.com/specops-kit/specops.git
-cd specops
+git clone https://github.com/kripikroli/specops-ai.git
+cd specops-ai
 uv sync          # Creates .venv, installs all deps + dev group
 ```
 
@@ -26,7 +26,7 @@ uv sync          # Creates .venv, installs all deps + dev group
 | Add a dev dependency | `uv add --dev <package>` |
 | Remove a dependency | `uv remove <package>` |
 | Run tests | `uv run pytest` |
-| Run tests with coverage | `uv run pytest --cov=src/specops` |
+| Run tests with coverage | `uv run pytest --cov=src/specops_ai` |
 | Lint | `uv run ruff check src/ tests/` |
 | Format | `uv run ruff format src/ tests/` |
 | Type check | `uv run mypy src/` |
@@ -61,7 +61,7 @@ GitHub Actions runs on every push to `main` and on PRs:
 |-----|-------------|---------|
 | **lint** | Ruff check + format | `uv run ruff check src/ tests/ examples/` |
 | **typecheck** | mypy strict | `uv run mypy src/` |
-| **test** | pytest on 3.10/3.11/3.12 | `uv run pytest --cov=src/specops` |
+| **test** | pytest on 3.10/3.11/3.12 | `uv run pytest --cov=src/specops_ai` |
 
 See `.github/workflows/ci.yml` for the full config.
 

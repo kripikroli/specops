@@ -7,7 +7,7 @@ Run:
     uv run python examples/plain_agent.py
 """
 
-from specops import trace_agent, trace_llm, trace_tool
+from specops_ai import trace_agent, trace_llm, trace_tool
 
 
 @trace_tool(name="web_search")

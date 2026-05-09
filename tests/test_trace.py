@@ -6,9 +6,9 @@ import pytest
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanExporter
 
-import specops
-from specops import trace_agent, trace_llm, trace_tool
-from specops._constants import (
+import specops_ai
+from specops_ai import trace_agent, trace_llm, trace_tool
+from specops_ai._constants import (
     AGENT_FRAMEWORK,
     AGENT_NAME,
     AGENT_TASK,
@@ -28,7 +28,7 @@ def _setup_tracer(monkeypatch: pytest.MonkeyPatch):
     from opentelemetry import trace
     from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 
-    specops.reset()
+    specops_ai.reset()
 
     exporter = InMemorySpanExporter()
     provider = TracerProvider()
@@ -40,8 +40,10 @@ def _setup_tracer(monkeypatch: pytest.MonkeyPatch):
     )
     trace.set_tracer_provider(provider)
 
-    monkeypatch.setattr("specops.config._configured", True)
-    monkeypatch.setattr("specops.config._tracer", provider.get_tracer("specops-test"))
+    monkeypatch.setattr("specops_ai.config._configured", True)
+    monkeypatch.setattr(
+        "specops_ai.config._tracer", provider.get_tracer("specops-test")
+    )
 
     yield exporter
 

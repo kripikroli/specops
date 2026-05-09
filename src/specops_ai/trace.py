@@ -11,7 +11,7 @@ from typing import Any, TypeVar
 from opentelemetry import context as otel_context
 from opentelemetry import trace
 
-from specops._constants import (
+from specops_ai._constants import (
     AGENT_FRAMEWORK,
     AGENT_NAME,
     AGENT_TASK,
@@ -25,12 +25,12 @@ from specops._constants import (
     TOOL_NAME,
     TOOL_RESULT,
 )
-from specops._context import (
+from specops_ai._context import (
     _current_agent_ctx,
     get_current_context,
     set_current_context,
 )
-from specops.config import get_tracer
+from specops_ai.config import get_tracer
 
 F = TypeVar("F", bound=Callable[..., Any])
 

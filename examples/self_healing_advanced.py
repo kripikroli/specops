@@ -4,7 +4,7 @@ Demonstrates the full healing chain: retry → prune_memory → escalate.
 Shows how token limit errors trigger memory pruning before escalation.
 """
 
-from specops import (
+from specops_ai import (
     EscalatePolicy,
     PruneMemoryPolicy,
     RetryPolicy,

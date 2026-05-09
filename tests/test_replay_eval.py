@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from specops.eval import (
+from specops_ai.eval import (
     EvalCase,
     _default_comparator,
     _parse_judge_response,
@@ -16,7 +16,7 @@ from specops.eval import (
     llm_judge,
     llm_judge_async,
 )
-from specops.replay import (
+from specops_ai.replay import (
     RecordedCall,
     ReplayMismatchError,
     ReplaySession,

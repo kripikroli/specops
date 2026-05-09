@@ -4,7 +4,7 @@ Demonstrates tracing a LangGraph StateGraph agent. This example uses
 mock objects to show the pattern without requiring langchain installed.
 
 Install with LangGraph support:
-    pip install specops[langgraph]
+    pip install specops-ai[langgraph]
 
 Run:
     uv run python examples/langgraph_agent.py
@@ -15,7 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from specops import trace_agent, trace_llm, trace_tool
+from specops_ai import trace_agent, trace_llm, trace_tool
 
 # --- Mock LangGraph types (replace with real imports in production) ---
 

@@ -10,7 +10,7 @@
 |---|------|--------|--------------|
 | 0.1 | Initialize repo with MIT license | ✅ Done | LICENSE file exists |
 | 0.2 | Create `pyproject.toml` (hatch, ruff, pytest, mypy, uv) | ✅ Done | `uv sync` succeeds |
-| 0.3 | Create folder structure (`src/specops/`, `tests/`, `examples/`, `docs/specs/`) | ✅ Done | Directories exist |
+| 0.3 | Create folder structure (`src/specops_ai/`, `tests/`, `examples/`, `docs/specs/`) | ✅ Done | Directories exist |
 | 0.4 | Write README.md | ✅ Done | Renders correctly on GitHub |
 | 0.5 | Write ROADMAP.md | ✅ Done | Phases clearly defined |
 | 0.6 | Write CONTRIBUTING.md + DEVELOPMENT.md | ✅ Done | Spec workflow + uv commands documented |
@@ -37,11 +37,11 @@
 | 1.5 | Implement `@trace_llm` decorator | ✅ Done | Creates child span with LLM attributes (model, tokens) |
 | 1.6 | Implement adapter system (`adapters.py`) | ✅ Done | BaseAdapter ABC + PlainAdapter + registry |
 | 1.7 | Add auto-configuration (`config.py`) | ✅ Done | Reads `OTEL_*` env vars, lazy init, console fallback |
-| 1.8 | Public API exports (`__init__.py`) | ✅ Done | All decorators + config importable from `specops` |
+| 1.8 | Public API exports (`__init__.py`) | ✅ Done | All decorators + config importable from `specops_ai` |
 | 1.9 | Write unit tests (15 tests) | ✅ Done | `uv run pytest` passes, all 15 green |
 | 1.10 | Create example: trace a custom agent | ⬜ Todo | `examples/custom_agent.py` runs |
 | 1.11 | Write API documentation (docstrings + docs/) | ⬜ Todo | All public APIs documented |
-| 1.12 | Publish to PyPI as v0.1.0 | ⬜ Todo | `pip install specops` works |
+| 1.12 | Publish to PyPI as v0.1.0 | ⬜ Todo | `pip install specops-ai` works |
 
 ---
 
@@ -60,7 +60,7 @@
 | 1.5.3 | Implement `CrewAIAdapter` | ✅ Done | Handles Task objects, kickoff inputs, token_usage |
 | 1.5.4 | Implement `AutoGenAdapter` (stub) | ✅ Done | Basic chat pattern support |
 | 1.5.5 | Auto-register adapters via `_auto_register()` | ✅ Done | Graceful ImportError handling |
-| 1.5.6 | Add optional deps to `pyproject.toml` | ✅ Done | `pip install specops[langgraph]` works |
+| 1.5.6 | Add optional deps to `pyproject.toml` | ✅ Done | `pip install specops-ai[langgraph]` works |
 | 1.5.7 | Create examples (plain, langgraph, crewai, async) | ✅ Done | All 4 examples run |
 | 1.5.8 | Update README.md with quickstart examples | ✅ Done | Shows all 3 frameworks |
 | 1.5.9 | Update design.md and tasks.md | ✅ Done | Specs reflect current state |

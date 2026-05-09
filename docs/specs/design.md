@@ -31,7 +31,7 @@
 
 ## 2. Phase 1 — Trace Module Design
 
-### 2.1 Semantic Conventions (`specops._constants`)
+### 2.1 Semantic Conventions (`specops_ai._constants`)
 
 All attribute keys follow the `specops.*` namespace to avoid collision with upstream OTel semconv.
 
@@ -211,9 +211,9 @@ Auto-configures on first decorator use (lazy init). No manual `configure()` call
 ### 2.6 Public API (`specops.__init__`)
 
 ```python
-from specops.trace import trace_agent, trace_tool, trace_llm
-from specops.config import configure
-from specops.adapters import BaseAdapter, PlainAdapter
+from specops_ai.trace import trace_agent, trace_tool, trace_llm
+from specops_ai.config import configure
+from specops_ai.adapters import BaseAdapter, PlainAdapter
 
 __all__ = [
     "trace_agent",
@@ -427,7 +427,7 @@ Creates OTel spans with `specops.heal.*` attributes for observability.
 Builds directed graphs from OTel spans to identify failure root causes:
 
 ```python
-from specops import build_rca_graph, to_dot
+from specops_ai import build_rca_graph, to_dot
 
 graph = build_rca_graph(spans)  # list[ReadableSpan]
 root_causes = graph.root_causes
@@ -440,7 +440,7 @@ dot_output = to_dot(graph)
 Exports RCA graphs to Graphviz DOT format (zero dependencies):
 
 ```python
-from specops import to_dot, save_dot
+from specops_ai import to_dot, save_dot
 
 dot_str = to_dot(graph, title="Failure Analysis")
 save_dot(graph, "rca.dot")

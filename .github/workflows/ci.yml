@@ -34,7 +34,7 @@ jobs:
       - uses: astral-sh/setup-uv@v4
       - run: uv python install ${{ matrix.python-version }}
       - run: uv sync --python ${{ matrix.python-version }}
-      - run: uv run pytest --cov=src/specops --cov-report=term-missing --cov-report=xml
+      - run: uv run pytest --cov=src/specops_ai --cov-report=term-missing --cov-report=xml
       - name: Upload coverage
         if: matrix.python-version == '3.12'
         uses: actions/upload-artifact@v4

@@ -4,7 +4,7 @@ Demonstrates tracing a CrewAI Crew execution. This example uses
 mock objects to show the pattern without requiring crewai installed.
 
 Install with CrewAI support:
-    pip install specops[crewai]
+    pip install specops-ai[crewai]
 
 Run:
     uv run python examples/crewai_agent.py
@@ -15,7 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from specops import trace_agent, trace_llm, trace_tool
+from specops_ai import trace_agent, trace_llm, trace_tool
 
 # --- Mock CrewAI types (replace with real imports in production) ---
 
