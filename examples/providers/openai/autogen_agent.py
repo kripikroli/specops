@@ -1,0 +1,115 @@
+"""Example: AutoGen multi-agent chat with SpecOps tracing (OpenAI).
+
+Demonstrates a RoundRobinGroupChat with Researcher + Writer agents.
+
+Setup:
+    pip install specops-ai[autogen]
+    cp .env.example .env  # fill in OPENAI_API_KEY
+
+Run:
+    uv run examples/providers/openai/autogen_agent.py
+
+Mock mode (no API key or autogen needed):
+    SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/openai/autogen_agent.py
+"""
+
+from __future__ import annotations
+
+import asyncio
+import os
+import sys
+from pathlib import Path
+
+_examples_dir = Path(__file__).resolve().parent.parent.parent
+sys.path.insert(0, str(_examples_dir))
+
+from shared.models import get_model  # noqa: E402
+from shared.utils import require_api_key  # noqa: E402
+
+from specops_ai import trace_agent, trace_tool  # noqa: E402
+
+api_key = require_api_key("OPENAI_API_KEY", "OpenAI")
+
+
+@trace_tool(name="lookup_fact")
+def lookup_fact(topic: str) -> str:
+    """Tool that looks up a fact about a topic."""
+    if os.environ.get("SPECOPS_EXAMPLE_MODE") == "mock":
+        return f"Fact: {topic} enables reliable AI agents via OTel-native tracing."
+    from openai import OpenAI
+
+    client = OpenAI(api_key=api_key)
+    resp = client.chat.completions.create(
+        model=get_model("openai"),
+        messages=[{"role": "user", "content": f"State one key fact about: {topic}"}],
+        temperature=0,
+    )
+    return resp.choices[0].message.content or ""
+
+
+@trace_agent(name="autogen-research-chat", framework="autogen")
+def run_autogen_chat(topic: str) -> str:
+    """Run an AutoGen RoundRobinGroupChat: Researcher + Writer."""
+    if os.environ.get("SPECOPS_EXAMPLE_MODE") == "mock":
+        print("  [mock] Researcher: researching topic")
+        print("  [mock] Tool: lookup_fact called")
+        fact = lookup_fact(topic)
+        print(f"  [mock] Researcher: {fact}")
+        print("  [mock] Writer: drafting summary")
+        summary = f"Summary of '{topic}': {fact} This makes it production-ready."
+        print(f"  [mock] Writer: {summary}")
+        return summary
+
+    try:
+        from autogen_agentchat.agents import AssistantAgent
+        from autogen_agentchat.conditions import TextMentionTermination
+        from autogen_agentchat.teams import RoundRobinGroupChat
+        from autogen_ext.models.openai import OpenAIChatCompletionClient
+    except ImportError:
+        print("[SKIP] autogen not installed. Run: pip install specops-ai[autogen]")
+        sys.exit(0)
+
+    model_client = OpenAIChatCompletionClient(
+        model=get_model("openai"), api_key=api_key
+    )
+
+    researcher = AssistantAgent(
+        name="Researcher",
+        model_client=model_client,
+        system_message="You research topics and provide key facts. Be concise.",
+    )
+    writer = AssistantAgent(
+        name="Writer",
+        model_client=model_client,
+        system_message=(
+            "You write a 2-sentence summary from the researcher's findings. "
+            "End your message with DONE when finished."
+        ),
+    )
+
+    termination = TextMentionTermination("DONE")
+    team = RoundRobinGroupChat(
+        participants=[researcher, writer],
+        termination_condition=termination,
+        max_turns=4,
+    )
+
+    result = asyncio.run(team.run(task=f"Research and summarize: {topic}"))
+    return str(result.messages[-1].content)
+
+
+if __name__ == "__main__":
+    print("=" * 60)
+    print("SpecOps AI — AutoGen Multi-Agent Example (OpenAI)")
+    print("=" * 60)
+
+    topic = "SpecOps AI agent reliability toolkit"
+    print(f"\nTopic: {topic}")
+    print("-" * 60)
+
+    output = run_autogen_chat(topic)
+
+    print(f"\nFinal output:\n{output}")
+    print("-" * 60)
+    print("✓ Tracing active (trace_agent + trace_tool spans emitted)")
+    print("=" * 60)

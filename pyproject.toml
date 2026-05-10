@@ -38,7 +38,11 @@ Issues = "https://github.com/kripikroli/specops-ai/issues"
 [project.optional-dependencies]
 langgraph = ["langgraph>=0.2.0", "langchain-core>=0.3.0"]
 crewai = ["crewai>=0.80.0"]
-all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0"]
+autogen = [
+    "autogen-ext[openai]>=0.7.5",
+    "pyautogen>=0.10.0",
+]
+all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen>=0.10.0"]
 
 # Package manager: uv[](https://docs.astral.sh/uv/)
 # Install deps: uv sync
