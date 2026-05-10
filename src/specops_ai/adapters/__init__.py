@@ -98,5 +98,12 @@ def _auto_register() -> None:
     except ImportError:
         pass
 
+    try:
+        from specops_ai.adapters.strands import StrandsAdapter
+
+        _ADAPTERS.setdefault("strands", StrandsAdapter)
+    except ImportError:
+        pass
+
 
 _auto_register()

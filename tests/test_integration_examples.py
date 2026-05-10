@@ -92,12 +92,15 @@ class TestProviderMockMode:
             ("openai", "basic_agent.py"),
             ("openai", "langgraph_agent.py"),
             ("openai", "crewai_agent.py"),
+            ("openai", "strands_agent.py"),
             ("anthropic", "basic_agent.py"),
             ("anthropic", "langgraph_agent.py"),
             ("anthropic", "crewai_agent.py"),
+            ("anthropic", "strands_agent.py"),
             ("grok", "basic_agent.py"),
             ("grok", "langgraph_agent.py"),
             ("grok", "crewai_agent.py"),
+            ("grok", "strands_agent.py"),
         ],
     )
     def test_provider_mock_mode(self, provider: str, script: str):

@@ -16,6 +16,7 @@ from specops_ai.adapters import (
 from specops_ai.adapters.autogen import AutoGenAdapter
 from specops_ai.adapters.crewai import CrewAIAdapter
 from specops_ai.adapters.langgraph import LangGraphAdapter
+from specops_ai.adapters.strands import StrandsAdapter
 
 
 class TestAdapterRegistry:
@@ -24,12 +25,14 @@ class TestAdapterRegistry:
         assert "langgraph" in _ADAPTERS
         assert "crewai" in _ADAPTERS
         assert "autogen" in _ADAPTERS
+        assert "strands" in _ADAPTERS
 
     def test_get_adapter_returns_correct_type(self):
         assert isinstance(get_adapter("plain"), PlainAdapter)
         assert isinstance(get_adapter("langgraph"), LangGraphAdapter)
         assert isinstance(get_adapter("crewai"), CrewAIAdapter)
         assert isinstance(get_adapter("autogen"), AutoGenAdapter)
+        assert isinstance(get_adapter("strands"), StrandsAdapter)
 
     def test_unknown_framework_falls_back_to_plain(self):
         assert isinstance(get_adapter("unknown"), PlainAdapter)
@@ -219,3 +222,73 @@ class TestAutoGenAdapter:
     def test_extract_tool_metadata_plain_result(self, adapter: AutoGenAdapter):
         meta = adapter.extract_tool_metadata((), {}, 42)
         assert meta["result"] == 42
+
+
+class TestStrandsAdapter:
+    @pytest.fixture
+    def adapter(self) -> StrandsAdapter:
+        return StrandsAdapter()
+
+    def test_extract_task_from_prompt_kwarg(self, adapter: StrandsAdapter):
+        assert adapter.extract_task((), {"prompt": "hello strands"}) == "hello strands"
+
+    def test_extract_task_from_string_arg(self, adapter: StrandsAdapter):
+        assert adapter.extract_task(("direct prompt",), {}) == "direct prompt"
+
+    def test_extract_task_from_dict_arg(self, adapter: StrandsAdapter):
+        assert adapter.extract_task(({"content": "msg"},), {}) == "msg"
+
+    def test_extract_task_from_messages_list(self, adapter: StrandsAdapter):
+        msgs = [{"content": "first"}, {"content": "last"}]
+        assert adapter.extract_task((msgs,), {}) == "last"
+
+    def test_extract_task_empty(self, adapter: StrandsAdapter):
+        assert adapter.extract_task((), {}) == ""
+
+    def test_extract_llm_metadata_dict_usage(self, adapter: StrandsAdapter):
+        result = {
+            "model": "claude-3",
+            "usage": {"input_tokens": 10, "output_tokens": 20},
+        }
+        meta = adapter.extract_llm_metadata(result)
+        assert meta["model"] == "claude-3"
+        assert meta["input_tokens"] == 10
+        assert meta["output_tokens"] == 20
+
+    def test_extract_llm_metadata_prompt_tokens_key(self, adapter: StrandsAdapter):
+        result = {
+            "model": "gpt-4o",
+            "usage": {"prompt_tokens": 5, "completion_tokens": 15},
+        }
+        meta = adapter.extract_llm_metadata(result)
+        assert meta["input_tokens"] == 5
+        assert meta["output_tokens"] == 15
+
+    def test_extract_llm_metadata_flat_tokens(self, adapter: StrandsAdapter):
+        result = {"model": "x", "input_tokens": 3, "output_tokens": 7}
+        meta = adapter.extract_llm_metadata(result)
+        assert meta["input_tokens"] == 3
+        assert meta["output_tokens"] == 7
+
+    def test_extract_llm_metadata_object_with_usage(self, adapter: StrandsAdapter):
+        class Resp:
+            model = "strands-model"
+            usage = {"input_tokens": 8, "output_tokens": 12}
+
+        meta = adapter.extract_llm_metadata(Resp())
+        assert meta["model"] == "strands-model"
+        assert meta["input_tokens"] == 8
+        assert meta["output_tokens"] == 12
+
+    def test_extract_llm_metadata_non_dict(self, adapter: StrandsAdapter):
+        assert adapter.extract_llm_metadata("plain") == {}
+
+    def test_extract_tool_metadata_dict_result(self, adapter: StrandsAdapter):
+        meta = adapter.extract_tool_metadata((), {}, {"content": "tool output"})
+        assert meta["result"] == "tool output"
+
+    def test_extract_tool_metadata_plain_result(self, adapter: StrandsAdapter):
+        meta = adapter.extract_tool_metadata(("a",), {"k": "v"}, 99)
+        assert meta["result"] == 99
+        assert meta["args"] == ("a",)
+        assert meta["kwargs"] == {"k": "v"}

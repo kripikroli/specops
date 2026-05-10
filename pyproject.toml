@@ -27,6 +27,7 @@ dependencies = [
     "crewai>=1.14.4",
     "opentelemetry-api>=1.20.0",
     "opentelemetry-sdk>=1.20.0",
+    "strands-agents>=1.39.0",
 ]
 
 [project.urls]
@@ -42,7 +43,8 @@ autogen = [
     "autogen-ext[openai]>=0.7.5",
     "pyautogen>=0.10.0",
 ]
-all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen>=0.10.0"]
+strands = ["strands-agents>=0.1.0"]
+all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen>=0.10.0", "strands-agents>=0.1.0"]
 
 # Package manager: uv[](https://docs.astral.sh/uv/)
 # Install deps: uv sync
