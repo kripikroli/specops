@@ -61,7 +61,7 @@ def run_crew(topic: str) -> str:
         )
 
     try:
-        from crewai import Agent, Crew, LLM, Process, Task
+        from crewai import LLM, Agent, Crew, Process, Task
     except ImportError:
         print("[SKIP] crewai not installed. Run: pip install specops-ai[crewai]")
         return "crewai not installed"
