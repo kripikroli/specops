@@ -35,6 +35,19 @@ from specops_ai.heal import (
     self_healing,
 )
 from specops_ai.rca import RCAEdge, RCAGraph, RCANode, build_rca_graph
+from specops_ai.regression import (
+    BehaviorStep,
+    Drift,
+    GoldenRun,
+    RegressionError,
+    RegressionResult,
+    RegressionStore,
+    check_regression,
+    compare_behavior,
+    golden,
+    record_step,
+    regression_test,
+)
 from specops_ai.replay import (
     RecordedCall,
     ReplayMismatchError,
@@ -101,6 +114,18 @@ __all__ = [
     "RCAGraph",
     "RCANode",
     "build_rca_graph",
+    # Regression
+    "BehaviorStep",
+    "Drift",
+    "GoldenRun",
+    "RegressionError",
+    "RegressionResult",
+    "RegressionStore",
+    "check_regression",
+    "compare_behavior",
+    "golden",
+    "record_step",
+    "regression_test",
     # Viz
     "save_dot",
     "to_dot",
