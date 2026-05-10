@@ -1,7 +1,7 @@
 {
   "session_id": "integration-1",
-  "seed": 3080359697,
-  "recorded_at": "2026-05-10T03:58:02.445943+00:00",
+  "seed": 2373428800,
+  "recorded_at": "2026-05-10T04:21:35.193158+00:00",
   "calls": [
     {
       "func_name": "TestTracingReplayEvalPipeline.test_full_pipeline.<locals>.mock_llm",
@@ -12,7 +12,7 @@
         "input_tokens": 5,
         "output_tokens": 1
       },
-      "timestamp": "2026-05-10T03:58:02.446141+00:00",
+      "timestamp": "2026-05-10T04:21:35.193344+00:00",
       "call_index": 0
     }
   ]

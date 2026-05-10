@@ -49,6 +49,7 @@ With framework adapters:
 ```bash
 pip install specops-ai[langgraph]   # LangGraph support
 pip install specops-ai[crewai]      # CrewAI support
+pip install specops-ai[strands]     # Strands support
 pip install specops-ai[all]         # All adapters
 ```
 
@@ -181,7 +182,7 @@ dot_output = to_dot(graph, title="Failure Analysis")
 | **RCA Graphs** | ✅ | Root-cause analysis from OTel spans, Graphviz DOT export |
 | **Simulation Sandbox** | ✅ | Test for loops, drift, cascades, and token overflow in a sandbox |
 | **Coordination Checks** | ✅ | Consensus, memory integrity, and divergence detection for multi-agent systems |
-| **Framework Adapters** | ✅ | LangGraph, CrewAI, AutoGen adapters (auto-detected) |
+| **Framework Adapters** | ✅ | LangGraph, CrewAI, AutoGen, Strands adapters (auto-detected) |
 
 ## Simulation Sandbox
 
@@ -298,7 +299,7 @@ uv run examples/simulation_demo.py
 
 ### Provider Examples (API Key Required)
 
-Provider examples connect to real LLM APIs. Each provider directory contains the same four examples for easy comparison:
+Provider examples connect to real LLM APIs. Each provider directory contains the same five examples for easy comparison:
 
 | Example | Framework | Description |
 |---------|-----------|-------------|
@@ -306,6 +307,7 @@ Provider examples connect to real LLM APIs. Each provider directory contains the
 | `langgraph_agent.py` | LangGraph | StateGraph agent with tool routing |
 | `crewai_agent.py` | CrewAI | Multi-agent crew orchestration |
 | `autogen_agent.py` | AutoGen | Multi-agent conversation |
+| `strands_agent.py` | Strands | Tool-use agent with Strands SDK |
 
 #### Available Providers
 
@@ -330,6 +332,7 @@ cp .env.example .env
 uv run examples/providers/openai/basic_agent.py
 uv run examples/providers/anthropic/langgraph_agent.py
 uv run examples/providers/grok/crewai_agent.py
+uv run examples/providers/openai/strands_agent.py
 ```
 
 > 💡 Provider examples exit gracefully with a helpful message if the required API key is missing.
@@ -341,6 +344,7 @@ Run any provider example without a real API key using mock mode — ideal for CI
 ```bash
 SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/openai/langgraph_agent.py
 SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/anthropic/autogen_agent.py
+SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/grok/strands_agent.py
 ```
 
 ### Viewing Traces
