@@ -61,33 +61,37 @@ def run_crew(topic: str) -> str:
         )
 
     try:
-        from crewai import Agent, Crew, Process, Task
+        from crewai import Agent, Crew, LLM, Process, Task
     except ImportError:
         print("[SKIP] crewai not installed. Run: pip install specops-ai[crewai]")
         return "crewai not installed"
 
-    os.environ.setdefault("XAI_API_KEY", api_key)
-    model = f"xai/{get_model('grok')}"
+    llm = LLM(
+        model=get_model("grok"),
+        provider="openai",
+        api_key=api_key,
+        base_url="https://api.x.ai/v1",
+    )
 
     researcher = Agent(
         role="Researcher",
         goal=f"Research {topic} thoroughly",
         backstory="You are an expert technical researcher.",
-        llm=model,
+        llm=llm,
         verbose=True,
     )
     writer = Agent(
         role="Writer",
         goal="Write a concise, engaging summary",
         backstory="You are a technical writer who makes complex topics accessible.",
-        llm=model,
+        llm=llm,
         verbose=True,
     )
     critic = Agent(
         role="Critic",
         goal="Review and improve the draft for clarity and accuracy",
         backstory="You are a meticulous editor focused on quality.",
-        llm=model,
+        llm=llm,
         verbose=True,
     )
 

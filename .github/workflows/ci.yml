@@ -26,12 +26,8 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    # Optional: pass LLM API keys for live example tests.
-    # If secrets are not configured, provider examples skip gracefully (exit 0).
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-      GROK_API_KEY: ${{ secrets.GROK_API_KEY }}
+    # Tests are 100% mocked — no API keys needed in CI.
+    # Provider examples run in mock mode or graceful-skip mode.
     strategy:
       matrix:
         python-version: ["3.11", "3.12"]

@@ -54,6 +54,8 @@ all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen
 
 [dependency-groups]
 dev = [
+    "autogen-agentchat>=0.4.0",
+    "autogen-ext[openai]>=0.4.0",
     "langchain-anthropic>=0.3.0",
     "langchain-openai>=0.3.0",
     "langgraph>=0.2.0",

@@ -4279,7 +4279,7 @@ wheels = [
 
 [[package]]
 name = "specops-ai"
-version = "0.3.0"
+version = "0.3.2"
 source = { editable = "." }
 dependencies = [
     { name = "crewai" },
@@ -4313,6 +4313,8 @@ strands = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "autogen-agentchat" },
+    { name = "autogen-ext", extra = ["openai"] },
     { name = "langchain-anthropic" },
     { name = "langchain-openai" },
     { name = "langgraph" },
@@ -4346,6 +4348,8 @@ provides-extras = ["langgraph", "crewai", "autogen", "strands", "all"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "autogen-agentchat", specifier = ">=0.4.0" },
+    { name = "autogen-ext", extras = ["openai"], specifier = ">=0.4.0" },
     { name = "langchain-anthropic", specifier = ">=0.3.0" },
     { name = "langchain-openai", specifier = ">=0.3.0" },
     { name = "langgraph", specifier = ">=0.2.0" },
