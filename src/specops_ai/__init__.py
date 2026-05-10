@@ -1,6 +1,6 @@
 """SpecOps — Agent Reliability Kit."""
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 
 from specops_ai.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
 from specops_ai.config import configure, get_tracer, reset

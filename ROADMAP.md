@@ -39,6 +39,7 @@
 - [x] LangGraph adapter (StateGraph, AIMessage, ToolMessage)
 - [x] CrewAI adapter (Task objects, token_usage)
 - [x] AutoGen adapter (message content, initiate_chat)
+- [x] Strands adapter (tool-use agents, model invocations)
 - [x] Auto-detection and registration
 
 ## Phase 2 — Replay Engine + Eval ✅
@@ -106,5 +107,6 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v0.3.0 | 2026-05-10 | Strands adapter, provider examples, 187 tests at 96% coverage |
 | v0.2.0 | 2026-05-08 | Simulation sandbox, multi-agent coordination, 120+ tests |
 | v0.1.0 | 2026-05-07 | Core tracing, replay, eval, self-healing, RCA, adapters |
