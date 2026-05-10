@@ -47,6 +47,7 @@ all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0"]
 
 [dependency-groups]
 dev = [
+    "langchain-anthropic>=0.3.0",
     "langchain-openai>=0.3.0",
     "langgraph>=0.2.0",
     "mypy>=2.0.0",
