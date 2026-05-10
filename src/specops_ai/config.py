@@ -10,6 +10,7 @@ from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
     SimpleSpanProcessor,
+    SpanExporter,
 )
 
 _tracer: trace.Tracer | None = None
@@ -41,9 +42,10 @@ def configure(
     provider = TracerProvider(resource=resource)
 
     otlp_endpoint = endpoint or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT")
+    exporter: SpanExporter
     if otlp_endpoint:
         try:
-            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (  # type: ignore[import-not-found]
+            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
                 OTLPSpanExporter,
             )
 
