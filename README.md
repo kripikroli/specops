@@ -24,11 +24,13 @@
 
 **SpecOps AI** is a lightweight, **framework-agnostic, OpenTelemetry-native** toolkit that makes LLM agents and multi-agent systems truly reliable in production.
 
-It gives you powerful primitives — deterministic replay, behavioral evaluation, self-healing policies, root-cause analysis graphs, simulation sandbox, and coordination checks — so you can stop worrying about hallucinations, infinite loops, memory drift, and mysterious failures that break most agents outside the lab.
+It gives you powerful primitives — deterministic replay, behavioral evaluation, self-healing policies, root-cause analysis graphs, simulation sandbox, chaos engineering, behavioral regression testing, and coordination checks — so you can stop worrying about hallucinations, infinite loops, memory drift, and mysterious failures that break most agents outside the lab.
 
 Whether you're a new engineer just getting started with agents, an experienced builder shipping complex multi-agent workflows with LangGraph, CrewAI, AutoGen or Strands, or an enterprise team that needs production-grade observability and resilience, SpecOps provides the missing "reliability layer" that turns fragile demos into trustworthy systems.
 
 Zero-config decorators, beautiful examples across OpenAI, Anthropic, and Grok, and full MIT-licensed freedom — install it in seconds and start building agents you can actually trust.
+
+> 🚀 **New in v0.4.0:** [Chaos Simulation](#chaos-simulation) — inject real-world faults and watch your agents self-heal. [Regression Testing](#behavioral-regression-testing) — record golden runs and automatically detect behavioral drift.
 
 ## The Problem
 
@@ -173,7 +175,7 @@ print(f"Root causes: {[n.name for n in graph.root_causes]}")
 dot_output = to_dot(graph, title="Failure Analysis")
 ```
 
-> ⚠️ SpecOps is in early development (v0.2.0). APIs may change. See the [Roadmap](ROADMAP.md).
+> ✅ **SpecOps v0.4.0** is stable. See the [Roadmap](ROADMAP.md) for what's next.
 
 ## Features
 
@@ -185,6 +187,8 @@ dot_output = to_dot(graph, title="Failure Analysis")
 | **Self-Healing** | ✅ | Retry with backoff, fallback chains, escalation, memory pruning |
 | **RCA Graphs** | ✅ | Root-cause analysis from OTel spans, Graphviz DOT export |
 | **Simulation Sandbox** | ✅ | Test for loops, drift, cascades, and token overflow in a sandbox |
+| **Chaos Simulation** | ✅ | Inject real-world faults (hallucination, loops, drift) and verify self-healing |
+| **Regression Testing** | ✅ | Record golden runs and automatically detect behavioral drift |
 | **Coordination Checks** | ✅ | Consensus, memory integrity, and divergence detection for multi-agent systems |
 | **Framework Adapters** | ✅ | LangGraph, CrewAI, AutoGen, Strands adapters (auto-detected) |
 
@@ -245,15 +249,17 @@ specops/
 │   ├── eval.py           # Evaluation harness
 │   ├── heal.py           # Self-healing policies
 │   ├── simulate.py       # Simulation sandbox
+│   ├── chaos.py          # Chaos fault injection
+│   ├── regression.py     # Behavioral regression testing
 │   ├── coordinate.py     # Multi-agent coordination
 │   ├── rca.py            # Root-cause analysis
 │   └── adapters/         # Framework adapters
-├── tests/                # Test suite (120+ tests)
+├── tests/                # Test suite (250+ tests)
 ├── examples/             # Usage examples
 │   ├── providers/        # Provider-specific (require API keys)
 │   │   ├── openai/       # OpenAI / LangGraph examples
-│   │   ├── anthropic/    # Anthropic examples (coming soon)
-│   │   └── grok/         # Grok examples (coming soon)
+│   │   ├── anthropic/    # Anthropic examples
+│   │   └── grok/         # Grok examples
 │   └── shared/           # Shared utilities (key loading, graceful skip)
 ├── docs/specs/           # Specifications
 └── pyproject.toml        # Build config (hatch + ruff + pytest)
@@ -292,6 +298,8 @@ These examples demonstrate SpecOps features using mocked LLM calls — perfect f
 | `simulation_loops.py` | Simulation | Detect agent loops in a sandbox |
 | `simulation_cascade.py` | Simulation | Test cascading failures across agents |
 | `simulation_demo.py` | Simulation | Full simulation sandbox walkthrough |
+| `chaos_demo.py` | Chaos | Inject faults (hallucination, loops, drift) and verify healing |
+| `regression_demo.py` | Regression | Record golden runs and detect behavioral drift |
 | `multi_agent_coordination.py` | Coordination | Consensus voting and divergence detection |
 
 ```bash

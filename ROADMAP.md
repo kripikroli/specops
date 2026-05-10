@@ -13,7 +13,7 @@
 | **3** | Self-healing + RCA graphs | Week 5 | ✅ Done |
 | **4** | Simulation sandbox + coordination | Week 6 | ✅ Done |
 | **5** | CLI tooling + dashboards | Weeks 7–9 | 📋 Planned |
-| **6** | Chaos engineering + ecosystem | Weeks 10+ | 📋 Planned |
+| **6** | Chaos engineering + regression testing | Weeks 10+ | ✅ Done |
 
 ---
 
@@ -83,10 +83,14 @@
 - [ ] Datadog integration guide
 - [ ] HTML report generation for eval results
 
-## Phase 6 — Chaos Engineering + Ecosystem (Planned)
+## Phase 6 — Chaos Engineering + Regression Testing ✅
 
-- [ ] Chaos injection: random failures, latency, token limits
-- [ ] Drift detection baselines (record → compare)
+- [x] Chaos injection: hallucination, infinite loops, memory drift, tool failures, coordination disagreements, cascade failures
+- [x] ChaosEngine with detection and self-healing verification
+- [x] Behavioral regression testing: record golden runs, detect drift
+- [x] `golden()` / `check_regression()` context managers
+- [x] `@regression_test` decorator
+- [x] Drift detection: step count, step order, tool usage, loops, timing
 - [ ] Community eval datasets
 - [ ] Plugin system for custom policies
 - [ ] Multi-language support exploration (TypeScript)
@@ -107,6 +111,7 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v0.4.0 | 2026-05-10 | Chaos engineering, behavioral regression testing, 250+ tests |
 | v0.3.0 | 2026-05-10 | Strands adapter, provider examples, 187 tests at 96% coverage |
 | v0.2.0 | 2026-05-08 | Simulation sandbox, multi-agent coordination, 120+ tests |
 | v0.1.0 | 2026-05-07 | Core tracing, replay, eval, self-healing, RCA, adapters |
