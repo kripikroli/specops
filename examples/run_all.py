@@ -15,9 +15,7 @@ from pathlib import Path
 EXAMPLES_DIR = Path(__file__).resolve().parent
 PROVIDERS_DIR = EXAMPLES_DIR / "providers"
 
-CORE_EXAMPLES = sorted(
-    p for p in EXAMPLES_DIR.glob("*.py") if p.name != "run_all.py"
-)
+CORE_EXAMPLES = sorted(p for p in EXAMPLES_DIR.glob("*.py") if p.name != "run_all.py")
 
 PROVIDER_EXAMPLES = sorted(PROVIDERS_DIR.glob("*/*.py"))
 PROVIDER_EXAMPLES = [p for p in PROVIDER_EXAMPLES if p.name != "__init__.py"]
