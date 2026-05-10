@@ -1,9 +1,5 @@
 <p align="center">
-  <h1 align="center">🛠️ SpecOps AI</h1>
-  <p align="center"><strong>Agent Reliability Kit</strong></p>
-  <p align="center">
-    Framework-agnostic, OTel-native toolkit for reliable, evaluatable, debuggable, and self-healing LLM agents in production.
-  </p>
+  <img src="assets/banner.jpg" alt="SpecOps AI" />
 </p>
 
 <p align="center">
@@ -25,6 +21,14 @@
 </p>
 
 ---
+
+**SpecOps AI** is a lightweight, **framework-agnostic, OpenTelemetry-native** toolkit that makes LLM agents and multi-agent systems truly reliable in production.
+
+It gives you powerful primitives — deterministic replay, behavioral evaluation, self-healing policies, root-cause analysis graphs, simulation sandbox, and coordination checks — so you can stop worrying about hallucinations, infinite loops, memory drift, and mysterious failures that break most agents outside the lab.
+
+Whether you're a new engineer just getting started with agents, an experienced builder shipping complex multi-agent workflows with LangGraph, CrewAI, AutoGen or Strands, or an enterprise team that needs production-grade observability and resilience, SpecOps provides the missing "reliability layer" that turns fragile demos into trustworthy systems.
+
+Zero-config decorators, beautiful examples across OpenAI, Anthropic, and Grok, and full MIT-licensed freedom — install it in seconds and start building agents you can actually trust.
 
 ## The Problem
 
