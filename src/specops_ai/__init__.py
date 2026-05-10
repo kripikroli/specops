@@ -3,6 +3,7 @@
 __version__ = "0.3.2"
 
 from specops_ai.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
+from specops_ai.chaos import ChaosEngine, ChaosEvent, ChaosResult, ChaosType
 from specops_ai.config import configure, get_tracer, reset
 from specops_ai.coordinate import (
     AgentOutput,
@@ -121,4 +122,9 @@ __all__ = [
     "check_consensus",
     "check_divergence",
     "check_memory_integrity",
+    # Chaos
+    "ChaosEngine",
+    "ChaosEvent",
+    "ChaosResult",
+    "ChaosType",
 ]

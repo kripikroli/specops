@@ -1,20 +1,20 @@
 {
   "session_id": "async-demo",
   "seed": 123,
-  "recorded_at": "2026-05-10T20:40:23.200332+00:00",
+  "recorded_at": "2026-05-10T21:24:03.580052+00:00",
   "calls": [
     {
       "func_name": "async_llm_call",
       "args_hash": "d48b44f006b90439",
       "result": "The result is 1",
-      "timestamp": "2026-05-10T20:40:23.214168+00:00",
+      "timestamp": "2026-05-10T21:24:03.593967+00:00",
       "call_index": 0
     },
     {
       "func_name": "async_llm_call",
       "args_hash": "e4a14bfacad6c780",
       "result": "The result is 3",
-      "timestamp": "2026-05-10T20:40:23.225383+00:00",
+      "timestamp": "2026-05-10T21:24:03.605173+00:00",
       "call_index": 1
     }
   ]
