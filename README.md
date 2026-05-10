@@ -17,6 +17,7 @@
 <p align="center">
   <a href="#getting-started">Getting Started</a> •
   <a href="#features">Features</a> •
+  <a href="#running-the-examples">Examples</a> •
   <a href="#simulation-sandbox">Simulation</a> •
   <a href="#multi-agent-coordination">Coordination</a> •
   <a href="ROADMAP.md">Roadmap</a> •
@@ -253,26 +254,102 @@ specops/
 └── pyproject.toml        # Build config (hatch + ruff + pytest)
 ```
 
-## Running Examples
+## Running the Examples
 
-Core examples (no API key needed):
+SpecOps ships with a rich set of examples covering every module. All examples run with a single command — no complex setup required.
+
+### Quick Start
 
 ```bash
+# 1. Install the package
+uv sync
+
+# 2. Run any core example immediately (no API keys needed)
 uv run examples/plain_agent.py
-uv run examples/async_pipeline.py
 ```
 
-Provider examples require API keys. Copy `.env.example` to `.env` and fill in your keys:
+### Core Examples (No API Key Required)
+
+These examples demonstrate SpecOps features using mocked LLM calls — perfect for learning and CI:
+
+| Example | Module | Description |
+|---------|--------|-------------|
+| `plain_agent.py` | Tracing | Simple research agent with search + LLM tracing |
+| `async_pipeline.py` | Tracing | Async multi-agent pipeline with nested spans |
+| `langgraph_agent.py` | Adapters | StateGraph-style agent with tool routing |
+| `crewai_agent.py` | Adapters | Multi-agent crew (researcher + writer) |
+| `replay_basic.py` | Replay | Record and replay agent sessions deterministically |
+| `replay_async_eval.py` | Replay + Eval | Async replay with evaluation harness |
+| `eval_golden_set.py` | Eval | Golden-set evaluation with LLM-as-judge |
+| `self_healing_basic.py` | Heal | Retry and fallback policies |
+| `self_healing_advanced.py` | Heal | Escalation and memory pruning strategies |
+| `rca_analysis.py` | RCA | Root-cause analysis graph from OTel spans |
+| `simulation_loops.py` | Simulation | Detect agent loops in a sandbox |
+| `simulation_cascade.py` | Simulation | Test cascading failures across agents |
+| `simulation_demo.py` | Simulation | Full simulation sandbox walkthrough |
+| `multi_agent_coordination.py` | Coordination | Consensus voting and divergence detection |
 
 ```bash
-cp .env.example .env     # Add your OPENAI_API_KEY
-uv run examples/providers/openai/langgraph_agent.py
+# Run any core example
+uv run examples/replay_basic.py
+uv run examples/self_healing_advanced.py
+uv run examples/simulation_demo.py
 ```
 
-Provider examples exit gracefully with a helpful message if the required key is missing. Set `SPECOPS_EXAMPLE_MODE=mock` to run without a real API key:
+### Provider Examples (API Key Required)
+
+Provider examples connect to real LLM APIs. Each provider directory contains the same four examples for easy comparison:
+
+| Example | Framework | Description |
+|---------|-----------|-------------|
+| `basic_agent.py` | Direct API | Simple traced agent call |
+| `langgraph_agent.py` | LangGraph | StateGraph agent with tool routing |
+| `crewai_agent.py` | CrewAI | Multi-agent crew orchestration |
+| `autogen_agent.py` | AutoGen | Multi-agent conversation |
+
+#### Available Providers
+
+| Provider | Directory | Required Key |
+|----------|-----------|--------------|
+| OpenAI | `examples/providers/openai/` | `OPENAI_API_KEY` |
+| Anthropic | `examples/providers/anthropic/` | `ANTHROPIC_API_KEY` |
+| Grok (xAI) | `examples/providers/grok/` | `GROK_API_KEY` |
+
+#### Setup
+
+```bash
+# 1. Copy the environment template
+cp .env.example .env
+
+# 2. Add your API key(s) — only the providers you need
+#    OPENAI_API_KEY=sk-...
+#    ANTHROPIC_API_KEY=sk-ant-...
+#    GROK_API_KEY=xai-...
+
+# 3. Run a provider example
+uv run examples/providers/openai/basic_agent.py
+uv run examples/providers/anthropic/langgraph_agent.py
+uv run examples/providers/grok/crewai_agent.py
+```
+
+> 💡 Provider examples exit gracefully with a helpful message if the required API key is missing.
+
+### Mock Mode (No API Key Needed)
+
+Run any provider example without a real API key using mock mode — ideal for CI pipelines and quick testing:
 
 ```bash
 SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/openai/langgraph_agent.py
+SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/anthropic/autogen_agent.py
+```
+
+### Viewing Traces
+
+By default, traces are printed to the console. To send traces to an OTel-compatible backend like Jaeger:
+
+```bash
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+uv run examples/plain_agent.py
 ```
 
 ## Contributing
