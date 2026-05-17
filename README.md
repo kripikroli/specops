@@ -30,7 +30,7 @@ Whether you're a new engineer just getting started with agents, an experienced b
 
 Zero-config decorators, beautiful examples across OpenAI, Anthropic, and Grok, and full MIT-licensed freedom — install it in seconds and start building agents you can actually trust.
 
-> 🚀 **New in v0.4.0:** [Chaos Simulation](#chaos-simulation) — inject real-world faults and watch your agents self-heal. [Regression Testing](#behavioral-regression-testing) — record golden runs and automatically detect behavioral drift.
+> 🚀 **New in v0.4.5:** [Health Score](#health-score) — one number that tells you if your agent is production-ready. [Shareable Replay Sessions](#shareable-replay-sessions) — export, share, and import full replay sessions for collaborative debugging.
 
 ## The Problem
 
@@ -106,6 +106,50 @@ with replaying("session-1"):
     same_result = call_llm("What is 2+2?")  # Identical output
 ```
 
+### Health Score
+
+One number that tells you if your agent is production-ready:
+
+```python
+from specops_ai import compute_health_score, health_check
+
+# Compute a health score from reliability signals
+report = compute_health_score(
+    loop_rate=0.05,        # 5% of actions are loops
+    consensus=0.95,        # 95% coordination agreement
+    self_healing=0.90,     # 90% of failures auto-healed
+    chaos_resilience=0.85, # 85% of injected faults handled
+)
+print(f"{report.score}/100 (Grade: {report.grade})")  # 89.2/100 (Grade: B)
+
+# Or use the decorator — auto-checks after every invocation
+@health_check(name="my-agent", threshold=70.0)
+def agent(task: str) -> dict:
+    ...  # Returns signal dict; raises HealthCheckFailed if score < 70
+```
+
+### Shareable Replay Sessions
+
+Export full replay sessions as portable JSON files — share with teammates, attach to bug reports, or archive for audits:
+
+```python
+from specops_ai import recording, replayable, export_replay, import_replay
+
+@replayable
+def call_llm(prompt: str) -> str:
+    return "..."
+
+# Record a session
+with recording(session_id="debug-session", seed=42) as session:
+    call_llm("What happened?")
+
+# Export for sharing
+export_replay(session, "bug-report.specops.json")
+
+# Teammate imports and replays
+replay_file = import_replay("bug-report.specops.json")
+```
+
 ### Self-Healing
 
 ```python
@@ -175,12 +219,14 @@ print(f"Root causes: {[n.name for n in graph.root_causes]}")
 dot_output = to_dot(graph, title="Failure Analysis")
 ```
 
-> ✅ **SpecOps v0.4.0** is stable. See the [Roadmap](ROADMAP.md) for what's next.
+> ✅ **SpecOps v0.4.5** is stable. See the [Roadmap](ROADMAP.md) for what's next.
 
 ## Features
 
 | Category | Status | Description |
 |----------|--------|-------------|
+| **Health Score** | ✅ | One-number production readiness score with signal breakdown and grades |
+| **Shareable Replay** | ✅ | Export/import replay sessions as portable JSON for collaborative debugging |
 | **OTel Tracing** | ✅ | Trace agent runs, tool calls, LLM requests with OpenTelemetry spans |
 | **Replay Engine** | ✅ | Record and replay agent sessions deterministically |
 | **Eval Harness** | ✅ | Golden-set comparison + LLM-as-judge for behavioral evaluation |
@@ -245,9 +291,10 @@ Built-in checks for multi-agent systems:
 specops/
 ├── src/specops_ai/       # Core library
 │   ├── trace.py          # OTel tracing decorators
-│   ├── replay.py         # Record/replay engine
+│   ├── replay.py         # Record/replay engine + shareable export
 │   ├── eval.py           # Evaluation harness
 │   ├── heal.py           # Self-healing policies
+│   ├── health.py         # Agent health score engine
 │   ├── simulate.py       # Simulation sandbox
 │   ├── chaos.py          # Chaos fault injection
 │   ├── regression.py     # Behavioral regression testing
@@ -291,9 +338,11 @@ These examples demonstrate SpecOps features using mocked LLM calls — perfect f
 | `crewai_agent.py` | Adapters | Multi-agent crew (researcher + writer) |
 | `replay_basic.py` | Replay | Record and replay agent sessions deterministically |
 | `replay_async_eval.py` | Replay + Eval | Async replay with evaluation harness |
+| `replay_demo.py` | Replay | Full replay walkthrough with shareable export |
 | `eval_golden_set.py` | Eval | Golden-set evaluation with LLM-as-judge |
 | `self_healing_basic.py` | Heal | Retry and fallback policies |
 | `self_healing_advanced.py` | Heal | Escalation and memory pruning strategies |
+| `health_demo.py` | Health | Compute agent health scores and grades |
 | `rca_analysis.py` | RCA | Root-cause analysis graph from OTel spans |
 | `simulation_loops.py` | Simulation | Detect agent loops in a sandbox |
 | `simulation_cascade.py` | Simulation | Test cascading failures across agents |

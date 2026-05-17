@@ -13,7 +13,8 @@
 | **3** | Self-healing + RCA graphs | Week 5 | ✅ Done |
 | **4** | Simulation sandbox + coordination | Week 6 | ✅ Done |
 | **5** | CLI tooling + dashboards | Weeks 7–9 | 📋 Planned |
-| **6** | Chaos engineering + regression testing | Weeks 10+ | ✅ Done |
+| **6** | Chaos engineering + regression testing | Weeks 10–11 | ✅ Done |
+| **6.5** | Health Score + Shareable Replay | Week 12 | ✅ Done |
 
 ---
 
@@ -91,6 +92,15 @@
 - [x] `golden()` / `check_regression()` context managers
 - [x] `@regression_test` decorator
 - [x] Drift detection: step count, step order, tool usage, loops, timing
+
+## Phase 6.5 — Health Score + Shareable Replay ✅ (v0.4.5)
+
+- [x] `compute_health_score()` — weighted 0-100 score from reliability signals
+- [x] `@health_check` decorator — auto-check after every agent invocation
+- [x] `HealthReport` with grade (A–F), signal breakdown, pass/fail
+- [x] `export_replay()` — export sessions as portable JSON with environment + diagnostics
+- [x] `import_replay()` — import and replay shared sessions
+- [x] `ReplayFile` bundles session, environment, health, chaos, and regression data
 - [ ] Community eval datasets
 - [ ] Plugin system for custom policies
 - [ ] Multi-language support exploration (TypeScript)
@@ -111,6 +121,7 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v0.4.5 | 2026-05-17 | Health Score engine, Shareable Replay Sessions (export/import) |
 | v0.4.0 | 2026-05-10 | Chaos engineering, behavioral regression testing, 250+ tests |
 | v0.3.0 | 2026-05-10 | Strands adapter, provider examples, 187 tests at 96% coverage |
 | v0.2.0 | 2026-05-08 | Simulation sandbox, multi-agent coordination, 120+ tests |

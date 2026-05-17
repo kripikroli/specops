@@ -8,23 +8,28 @@
 | [async_pipeline.py](async_pipeline.py) | Async multi-agent pipeline with nested spans | Tracing |
 | [replay_basic.py](replay_basic.py) | Record and replay agent sessions | Replay |
 | [replay_async_eval.py](replay_async_eval.py) | Async replay with evaluation | Replay + Eval |
+| [replay_demo.py](replay_demo.py) | Full replay walkthrough | Replay |
 | [eval_golden_set.py](eval_golden_set.py) | Golden-set evaluation with LLM judge | Eval |
 | [self_healing_basic.py](self_healing_basic.py) | Retry and fallback policies | Heal |
 | [self_healing_advanced.py](self_healing_advanced.py) | Escalation and memory pruning | Heal |
+| [health_demo.py](health_demo.py) | Agent health score computation and grading | Health |
 | [rca_analysis.py](rca_analysis.py) | Root-cause analysis from spans | RCA |
 | [simulation_loops.py](simulation_loops.py) | Detect agent loops in a sandbox | Simulation |
 | [simulation_cascade.py](simulation_cascade.py) | Test cascading failures | Simulation |
+| [simulation_demo.py](simulation_demo.py) | Full simulation sandbox walkthrough | Simulation |
+| [chaos_demo.py](chaos_demo.py) | Inject faults and verify self-healing | Chaos |
+| [regression_demo.py](regression_demo.py) | Record golden runs and detect drift | Regression |
 | [multi_agent_coordination.py](multi_agent_coordination.py) | Consensus and divergence checks | Coordination |
 
 ## Running
 
 ```bash
 # All examples work with just the core package
-uv run python examples/plain_agent.py
+uv run examples/plain_agent.py
 
 # Framework adapter examples (install extras first)
-uv run python examples/langgraph_agent.py
-uv run python examples/crewai_agent.py
+uv run examples/langgraph_agent.py
+uv run examples/crewai_agent.py
 ```
 
 ## Viewing Traces
@@ -33,5 +38,5 @@ By default, traces are printed to the console. To send to Jaeger:
 
 ```bash
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
-uv run python examples/plain_agent.py
+uv run examples/plain_agent.py
 ```

@@ -176,6 +176,7 @@ uv run pytest
 # Core examples (no API key needed)
 uv run examples/plain_agent.py
 uv run examples/simulation_demo.py
+uv run examples/chaos_demo.py
 
 # Provider examples (requires API key)
 cp .env.example .env  # Add your keys
@@ -211,7 +212,7 @@ New code follows this structure:
 
 ```
 src/specops_ai/
-├── <module>.py        # New module (trace, replay, eval, heal, etc.)
+├── <module>.py        # New module (trace, replay, eval, heal, health, simulate, etc.)
 ├── adapters/          # Framework adapters (optional, auto-detected)
 └── __init__.py        # Public API re-exports
 

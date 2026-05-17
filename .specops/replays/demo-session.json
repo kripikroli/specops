@@ -1,7 +1,7 @@
 {
   "session_id": "demo-session",
   "seed": 42,
-  "recorded_at": "2026-05-10T21:24:03.661376+00:00",
+  "recorded_at": "2026-05-17T17:01:48.763999+00:00",
   "calls": [
     {
       "func_name": "search",
@@ -11,14 +11,14 @@
         "result_14",
         "result_87"
       ],
-      "timestamp": "2026-05-10T21:24:03.664235+00:00",
+      "timestamp": "2026-05-17T17:01:48.766841+00:00",
       "call_index": 0
     },
     {
       "func_name": "call_llm",
       "args_hash": "4e06c0d3d19cecb7",
       "result": "France's capital city is Paris.",
-      "timestamp": "2026-05-10T21:24:03.664322+00:00",
+      "timestamp": "2026-05-17T17:01:48.766928+00:00",
       "call_index": 1
     }
   ]
