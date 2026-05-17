@@ -34,6 +34,14 @@ from specops_ai.heal import (
     RetryPolicy,
     self_healing,
 )
+from specops_ai.health import (
+    DEFAULT_WEIGHTS,
+    HealthCheckFailed,
+    HealthReport,
+    HealthSignal,
+    compute_health_score,
+    health_check,
+)
 from specops_ai.rca import RCAEdge, RCAGraph, RCANode, build_rca_graph
 from specops_ai.regression import (
     BehaviorStep,
@@ -100,6 +108,13 @@ __all__ = [
     "eval_golden_set_async",
     "llm_judge",
     "llm_judge_async",
+    # Health
+    "DEFAULT_WEIGHTS",
+    "HealthCheckFailed",
+    "HealthReport",
+    "HealthSignal",
+    "compute_health_score",
+    "health_check",
     # Heal
     "EscalatePolicy",
     "FallbackPolicy",
