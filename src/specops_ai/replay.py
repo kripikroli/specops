@@ -17,6 +17,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
+from enum import Enum
 from pathlib import Path
 from typing import Any, TypeVar
 
@@ -284,3 +285,153 @@ def _find_replay_result(state: _ReplayState, func_name: str, args_hash: str) -> 
 
 class ReplayMismatchError(Exception):
     """Raised when replay cannot find a matching recorded call."""
+
+
+# --- Shareable Replay File ---
+
+
+@dataclass
+class ReplayFile:
+    """A portable, self-contained replay file bundling session + metadata.
+
+    Includes the replay session, environment info, and optional diagnostics
+    (health report, chaos results, regression data) for full reproducibility.
+    """
+
+    version: str = "1.0"
+    session: ReplaySession | None = None
+    environment: dict[str, Any] = field(default_factory=dict)
+    health: dict[str, Any] | None = None
+    chaos: dict[str, Any] | None = None
+    regression: dict[str, Any] | None = None
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+
+def _collect_environment() -> dict[str, Any]:
+    """Collect current environment metadata for portability."""
+    import platform
+    import sys
+
+    return {
+        "python_version": sys.version,
+        "platform": platform.platform(),
+        "specops_version": "0.4.0",
+    }
+
+
+def _serialize_health(health: Any) -> dict[str, Any] | None:
+    """Serialize a HealthReport to dict if provided."""
+    if health is None:
+        return None
+    if hasattr(health, "__dataclass_fields__"):
+        return asdict(health)
+    if isinstance(health, dict):
+        return health
+    return None
+
+
+def _serialize_chaos(chaos: Any) -> dict[str, Any] | None:
+    """Serialize a ChaosResult to dict if provided."""
+    if chaos is None:
+        return None
+    if hasattr(chaos, "__dataclass_fields__"):
+        data = asdict(chaos)
+        # Convert enum values to strings
+        for event in data.get("events", []):
+            ct = event.get("chaos_type")
+            if hasattr(ct, "value") or isinstance(ct, Enum):
+                event["chaos_type"] = ct.value
+        return data
+    if isinstance(chaos, dict):
+        return chaos
+    return None
+
+
+def _serialize_regression(regression: Any) -> dict[str, Any] | None:
+    """Serialize a GoldenRun to dict if provided."""
+    if regression is None:
+        return None
+    if hasattr(regression, "__dataclass_fields__"):
+        return asdict(regression)
+    if isinstance(regression, dict):
+        return regression
+    return None
+
+
+def export_replay(
+    session: ReplaySession | str,
+    path: str | Path,
+    *,
+    store: ReplayStore | None = None,
+    health: Any | None = None,
+    chaos: Any | None = None,
+    regression: Any | None = None,
+    metadata: dict[str, Any] | None = None,
+) -> Path:
+    """Export a replay session to a portable JSON file.
+
+    Bundles the session with environment info and optional diagnostics
+    for sharing, debugging, or archival.
+
+    Args:
+        session: A ReplaySession object or session_id string.
+        path: Destination file path for the exported JSON.
+        store: ReplayStore to load from if session is a string.
+        health: Optional HealthReport to include.
+        chaos: Optional ChaosResult to include.
+        regression: Optional GoldenRun to include.
+        metadata: Optional extra metadata dict.
+
+    Returns:
+        Path to the written file.
+    """
+    st = store or _default_store
+    sess = st.load(session) if isinstance(session, str) else session
+
+    replay_file = ReplayFile(
+        session=sess,
+        environment=_collect_environment(),
+        health=_serialize_health(health),
+        chaos=_serialize_chaos(chaos),
+        regression=_serialize_regression(regression),
+        metadata=metadata or {},
+    )
+
+    out = Path(path)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(
+        json.dumps(asdict(replay_file), indent=2, default=str), encoding="utf-8"
+    )
+    return out
+
+
+def import_replay(path: str | Path) -> ReplayFile:
+    """Import a replay file from disk.
+
+    Loads the full ReplayFile including session, environment, and diagnostics.
+    The returned session can be passed directly to `replaying()`.
+
+    Args:
+        path: Path to the exported replay JSON file.
+
+    Returns:
+        A ReplayFile with the deserialized session and metadata.
+    """
+    p = Path(path)
+    data = json.loads(p.read_text(encoding="utf-8"))
+
+    session_data = data.get("session")
+    sess: ReplaySession | None = None
+    if session_data:
+        calls = [RecordedCall(**c) for c in session_data.pop("calls", [])]
+        sess = ReplaySession(**session_data, calls=calls)
+
+    return ReplayFile(
+        version=data.get("version", "1.0"),
+        session=sess,
+        environment=data.get("environment", {}),
+        health=data.get("health"),
+        chaos=data.get("chaos"),
+        regression=data.get("regression"),
+        metadata=data.get("metadata", {}),
+    )

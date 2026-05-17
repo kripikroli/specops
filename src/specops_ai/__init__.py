@@ -58,9 +58,12 @@ from specops_ai.regression import (
 )
 from specops_ai.replay import (
     RecordedCall,
+    ReplayFile,
     ReplayMismatchError,
     ReplaySession,
     ReplayStore,
+    export_replay,
+    import_replay,
     recording,
     replayable,
     replaying,
@@ -94,9 +97,12 @@ __all__ = [
     "trace_tool",
     # Replay
     "RecordedCall",
+    "ReplayFile",
     "ReplayMismatchError",
     "ReplaySession",
     "ReplayStore",
+    "export_replay",
+    "import_replay",
     "recording",
     "replayable",
     "replaying",
