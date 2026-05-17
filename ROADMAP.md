@@ -12,7 +12,7 @@
 | **2** | Replay engine + behavioral eval | Week 4 | ✅ Done |
 | **3** | Self-healing + RCA graphs | Week 5 | ✅ Done |
 | **4** | Simulation sandbox + coordination | Week 6 | ✅ Done |
-| **5** | CLI tooling + dashboards | Weeks 7–9 | 📋 Planned |
+| **5** | CLI tooling + dashboards | Weeks 7–9 | 🚧 In Progress |
 | **6** | Chaos engineering + regression testing | Weeks 10–11 | ✅ Done |
 | **6.5** | Health Score + Shareable Replay | Week 12 | ✅ Done |
 
@@ -75,8 +75,9 @@
 - [x] Integration with replay, eval, and healing layers
 - [x] 120+ tests passing
 
-## Phase 5 — CLI Tooling + Dashboards (Planned)
+## Phase 5 — CLI Tooling + Dashboards (In Progress)
 
+- [x] `specops-demo` — browser-based visual examples runner with live streaming
 - [ ] `specops-ai eval run` CLI command
 - [ ] `specops-ai replay` CLI command
 - [ ] `specops-ai sim` CLI for running simulation scenarios
@@ -121,6 +122,7 @@
 
 | Version | Date | Highlights |
 |---------|------|------------|
+| v0.4.6 | 2026-05-17 | Visual Demo Runner (`specops-demo`), 30 new tests, browser-based UI |
 | v0.4.5 | 2026-05-17 | Health Score engine, Shareable Replay Sessions (export/import) |
 | v0.4.0 | 2026-05-10 | Chaos engineering, behavioral regression testing, 250+ tests |
 | v0.3.0 | 2026-05-10 | Strands adapter, provider examples, 187 tests at 96% coverage |

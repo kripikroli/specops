@@ -30,7 +30,7 @@ Whether you're a new engineer just getting started with agents, an experienced b
 
 Zero-config decorators, beautiful examples across OpenAI, Anthropic, and Grok, and full MIT-licensed freedom — install it in seconds and start building agents you can actually trust.
 
-> 🚀 **New in v0.4.5:** [Health Score](#health-score) — one number that tells you if your agent is production-ready. [Shareable Replay Sessions](#shareable-replay-sessions) — export, share, and import full replay sessions for collaborative debugging.
+> 🚀 **New in v0.4.6:** [Visual Demo Runner](#visual-demo-runner) — browse, view code, and run all examples from a beautiful browser-based UI with live streaming output.
 
 ## The Problem
 
@@ -219,7 +219,7 @@ print(f"Root causes: {[n.name for n in graph.root_causes]}")
 dot_output = to_dot(graph, title="Failure Analysis")
 ```
 
-> ✅ **SpecOps v0.4.5** is stable. See the [Roadmap](ROADMAP.md) for what's next.
+> ✅ **SpecOps v0.4.6** is stable. See the [Roadmap](ROADMAP.md) for what's next.
 
 ## Features
 
