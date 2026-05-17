@@ -32,6 +32,14 @@ uv run examples/langgraph_agent.py
 uv run examples/crewai_agent.py
 ```
 
+## Visual Demo Runner
+
+Browse, view code, and run all examples from a browser-based UI:
+
+```bash
+uv run specops-demo
+```
+
 ## Viewing Traces
 
 By default, traces are printed to the console. To send to Jaeger:

@@ -30,6 +30,9 @@ dependencies = [
     "strands-agents>=1.39.0",
 ]
 
+[project.scripts]
+specops-demo = "specops_ai.demo:main"
+
 [project.urls]
 Homepage = "https://github.com/kripikroli/specops-ai"
 Documentation = "https://github.com/kripikroli/specops-ai/tree/main/docs"
@@ -44,6 +47,7 @@ autogen = [
     "pyautogen>=0.10.0",
 ]
 strands = ["strands-agents>=0.1.0"]
+demo = ["fastapi>=0.115.0", "uvicorn[standard]>=0.34.0", "websockets>=14.0"]
 all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen>=0.10.0", "strands-agents>=0.1.0"]
 
 # Package manager: uv[](https://docs.astral.sh/uv/)
@@ -56,6 +60,7 @@ all = ["langgraph>=0.2.0", "langchain-core>=0.3.0", "crewai>=0.80.0", "pyautogen
 dev = [
     "autogen-agentchat>=0.4.0",
     "autogen-ext[openai]>=0.4.0",
+    "fastapi>=0.115.0",
     "langchain-anthropic>=0.3.0",
     "langchain-openai>=0.3.0",
     "langgraph>=0.2.0",
@@ -65,6 +70,8 @@ dev = [
     "pytest-cov>=5.0.0",
     "python-dotenv>=1.0.0",
     "ruff>=0.15.12",
+    "uvicorn[standard]>=0.34.0",
+    "websockets>=14.0",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -81,6 +88,9 @@ src = ["src"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP", "B", "A", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"src/specops_ai/demo.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.10"

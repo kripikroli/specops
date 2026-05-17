@@ -408,6 +408,28 @@ SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/anthropic/autogen_agent.py
 SPECOPS_EXAMPLE_MODE=mock uv run examples/providers/grok/strands_agent.py
 ```
 
+### Visual Demo Runner
+
+Launch a beautiful browser-based UI to browse, view code, and run all examples with live streaming output:
+
+```bash
+# Launch the visual demo runner
+uv run specops-demo
+
+# Or with custom port
+SPECOPS_DEMO_PORT=9000 uv run specops-demo
+```
+
+The demo runner provides:
+- **Sidebar** — Auto-discovered examples with descriptions and module tags
+- **Code Viewer** — Syntax-highlighted, read-only source code for each example
+- **Live Output** — Real-time streaming of stdout/stderr via WebSocket
+- **Run All** — Execute all examples sequentially with ✓/✗ status per example
+- **Collapsible Panels** — Traces, Health Score, and Replay Summary sections
+- **Dark/Light Mode** — Toggle between themes
+
+> 💡 The demo auto-discovers any new examples added to `examples/` — no code changes needed.
+
 ### Viewing Traces
 
 By default, traces are printed to the console. To send traces to an OTel-compatible backend like Jaeger:
