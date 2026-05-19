@@ -1,7 +1,7 @@
 {
   "session_id": "sim-demo",
   "seed": 42,
-  "recorded_at": "2026-05-17T19:07:54.340510+00:00",
+  "recorded_at": "2026-05-19T11:26:13.400416+00:00",
   "calls": [
     {
       "func_name": "search_tool",
@@ -10,14 +10,14 @@
         "result-1: specops reliability",
         "result-2: specops reliability"
       ],
-      "timestamp": "2026-05-17T19:07:54.340553+00:00",
+      "timestamp": "2026-05-19T11:26:13.400639+00:00",
       "call_index": 0
     },
     {
       "func_name": "call_llm",
       "args_hash": "3279b03a7e21937d",
       "result": "Response to: Summarize: short query",
-      "timestamp": "2026-05-17T19:07:54.340621+00:00",
+      "timestamp": "2026-05-19T11:26:13.402801+00:00",
       "call_index": 1
     }
   ]

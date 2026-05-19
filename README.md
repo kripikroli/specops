@@ -432,12 +432,28 @@ The demo runner provides:
 
 ### Viewing Traces
 
-By default, traces are printed to the console. To send traces to an OTel-compatible backend like Jaeger:
+By default, traces are printed to the console. To send traces to an OTel-compatible backend:
 
 ```bash
+# Self-hosted SpecOps dashboard (OTLP/HTTP JSON on port 8000)
+export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:8000
+export OTEL_EXPORTER_OTLP_PROTOCOL=http/json
+uv run examples/plain_agent.py
+
+# Jaeger or other gRPC backends
 export OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4317
+export OTEL_EXPORTER_OTLP_PROTOCOL=grpc
 uv run examples/plain_agent.py
 ```
+
+**Supported environment variables:**
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `OTEL_EXPORTER_OTLP_ENDPOINT` | *(none — console)* | Base URL of the OTLP collector |
+| `OTEL_EXPORTER_OTLP_PROTOCOL` | `http/json` | Transport protocol: `http/json` or `grpc` |
+| `OTEL_EXPORTER_OTLP_TRACES_ENDPOINT` | *(auto: endpoint + /v1/traces)* | Explicit traces endpoint (overrides base) |
+| `OTEL_SERVICE_NAME` | `specops` | Service name in trace resource |
 
 ## Contributing
 

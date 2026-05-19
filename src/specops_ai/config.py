@@ -44,15 +44,28 @@ def configure(
     otlp_endpoint = endpoint or os.environ.get("OTEL_EXPORTER_OTLP_ENDPOINT")
     exporter: SpanExporter
     if otlp_endpoint:
-        try:
-            from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
-                OTLPSpanExporter,
-            )
+        protocol = os.environ.get("OTEL_EXPORTER_OTLP_PROTOCOL", "http/json")
+        traces_endpoint = os.environ.get("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT")
+        if protocol == "grpc":
+            try:
+                from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import (
+                    OTLPSpanExporter as GrpcExporter,
+                )
 
-            exporter = OTLPSpanExporter(endpoint=otlp_endpoint)
-        except ImportError:
-            # Fall back to console if OTLP exporter not installed
-            exporter = ConsoleSpanExporter()
+                exporter = GrpcExporter(endpoint=traces_endpoint or otlp_endpoint)
+            except ImportError:
+                exporter = ConsoleSpanExporter()
+        else:
+            try:
+                from opentelemetry.exporter.otlp.proto.http.trace_exporter import (
+                    OTLPSpanExporter as HttpExporter,
+                )
+
+                exporter = HttpExporter(
+                    endpoint=traces_endpoint or f"{otlp_endpoint.rstrip('/')}/v1/traces"
+                )
+            except ImportError:
+                exporter = ConsoleSpanExporter()
     else:
         exporter = ConsoleSpanExporter()
 
