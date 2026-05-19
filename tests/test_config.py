@@ -35,9 +35,7 @@ class TestProtocolDetection:
             mock_http.return_value = MagicMock()
             configure()
 
-        mock_http.assert_called_once_with(
-            endpoint="http://localhost:8000/v1/traces"
-        )
+        mock_http.assert_called_once_with(endpoint="http://localhost:8000/v1/traces")
 
     def test_explicit_http_json_protocol(self, monkeypatch: pytest.MonkeyPatch):
         """OTEL_EXPORTER_OTLP_PROTOCOL=http/json uses HTTP exporter."""
@@ -50,9 +48,7 @@ class TestProtocolDetection:
             mock_http.return_value = MagicMock()
             configure()
 
-        mock_http.assert_called_once_with(
-            endpoint="http://localhost:8000/v1/traces"
-        )
+        mock_http.assert_called_once_with(endpoint="http://localhost:8000/v1/traces")
 
     def test_grpc_protocol(self, monkeypatch: pytest.MonkeyPatch):
         """OTEL_EXPORTER_OTLP_PROTOCOL=grpc uses gRPC exporter."""
@@ -80,17 +76,13 @@ class TestProtocolDetection:
             mock_http.return_value = MagicMock()
             configure()
 
-        mock_http.assert_called_once_with(
-            endpoint="http://custom:9999/v1/traces"
-        )
+        mock_http.assert_called_once_with(endpoint="http://custom:9999/v1/traces")
 
     def test_traces_endpoint_with_grpc(self, monkeypatch: pytest.MonkeyPatch):
         """OTEL_EXPORTER_OTLP_TRACES_ENDPOINT works with gRPC protocol too."""
         monkeypatch.setenv("OTEL_EXPORTER_OTLP_ENDPOINT", "http://localhost:4317")
         monkeypatch.setenv("OTEL_EXPORTER_OTLP_PROTOCOL", "grpc")
-        monkeypatch.setenv(
-            "OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "http://custom:4317"
-        )
+        monkeypatch.setenv("OTEL_EXPORTER_OTLP_TRACES_ENDPOINT", "http://custom:4317")
 
         with patch(
             "opentelemetry.exporter.otlp.proto.grpc.trace_exporter.OTLPSpanExporter"
@@ -133,6 +125,4 @@ class TestProtocolDetection:
             mock_http.return_value = MagicMock()
             configure()
 
-        mock_http.assert_called_once_with(
-            endpoint="http://localhost:8000/v1/traces"
-        )
+        mock_http.assert_called_once_with(endpoint="http://localhost:8000/v1/traces")
