@@ -214,6 +214,8 @@ async def _run_and_stream(
 ) -> bool:
     """Execute a script and stream stdout/stderr lines via WebSocket."""
     env = {**os.environ}
+    src_dir = str(Path(__file__).resolve().parent.parent)
+    env["PYTHONPATH"] = src_dir + os.pathsep + env.get("PYTHONPATH", "")
     if mock:
         env["SPECOPS_EXAMPLE_MODE"] = "mock"
 
