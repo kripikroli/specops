@@ -1,6 +1,6 @@
 """SpecOps — Agent Reliability Kit."""
 
-__version__ = "0.4.6"
+__version__ = "0.5.0"
 
 from specops_ai.adapters import BaseAdapter, PlainAdapter, get_adapter, register_adapter
 from specops_ai.chaos import ChaosEngine, ChaosEvent, ChaosResult, ChaosType
